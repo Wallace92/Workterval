@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50fa641bfabc4bacb9addccabcfe5879, type: 3}
+  m_Name: Workout
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Data.WorkoutData
+  Exercises:
+  - {fileID: 11400000, guid: bf81283e42d9db64ab28e8937ae79cba, type: 2}
+  - {fileID: 11400000, guid: ea474021efa794943ab3928842d86298, type: 2}
+  - {fileID: 11400000, guid: 898478e2f2e18e849914866fe67dbb89, type: 2}
+  - {fileID: 11400000, guid: c6536027e159e7e44909e88044ad3d82, type: 2}
