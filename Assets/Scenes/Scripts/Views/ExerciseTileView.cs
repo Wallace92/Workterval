@@ -1,4 +1,3 @@
-using System;
 using Scenes.Scripts.Models;
 using TMPro;
 using UnityEngine;
@@ -17,47 +16,23 @@ namespace Scenes.Scripts.Views
 
         [SerializeField]
         private TextMeshProUGUI title;
-
-        [SerializeField]
-        private TextMeshProUGUI description;
-
-        [SerializeField]
-        private GameObject editorPanel;
-
-        [SerializeField]
-        private TextMeshProUGUI editorLabel;
-
+        
         [SerializeField]
         private TMP_InputField valueInput;
-
-        private Action<IExercise> onClicked;
+        
         private IExercise m_exercise;
+        public IExercise Exercise => m_exercise;
 
-        public void Bind(IExercise exercise, Action<IExercise> clicked)
+        public void Awake()
         {
-            m_exercise = exercise;
-            onClicked = clicked;
-
-            icon.sprite = m_exercise.Icon;
-            title.text = m_exercise.Title;
-
-            rootButton.onClick.RemoveAllListeners();
-            rootButton.onClick.AddListener(() =>
-            {
-                ToggleEditor();
-                onClicked?.Invoke(exercise);
-            });
-
-            valueInput.onEndEdit.RemoveAllListeners();
             valueInput.onEndEdit.AddListener(_ => NotifyValueChanged());
-
- 
-            valueInput.text = m_exercise.Description;
-            editorPanel.SetActive(false);
         }
         
-
-        private void ToggleEditor() => editorPanel.SetActive(!editorPanel.activeSelf);
+        public void OnDestroy()
+        {
+            valueInput.onEndEdit.RemoveAllListeners();
+        }
+        
 
         private void NotifyValueChanged()
         {
@@ -65,6 +40,14 @@ namespace Scenes.Scripts.Views
             float.TryParse(valueInput.text, out var fv);
             // wyślij obie formy – kontroler użyje właściwej
             //onValueChanged?.Invoke(def, Mathf.Max(1, iv), Mathf.Max(1f, fv));
+        }
+
+        public void Initialize(IExercise exercise)
+        {
+            m_exercise = exercise;
+            
+            icon.sprite = m_exercise.Icon;
+            title.text = m_exercise.Title;
         }
     }
 }

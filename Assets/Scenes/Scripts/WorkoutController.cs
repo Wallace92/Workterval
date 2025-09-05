@@ -16,24 +16,10 @@ namespace Scenes.Scripts
         [Header("Data")]
         [SerializeField] 
         private WorkoutData m_workoutData;
-
-        [Header("UI")]
         [SerializeField] 
-        private Transform m_gridContent;     
-        [SerializeField] 
-        private ExerciseTileView m_tilePrefab;
-        [SerializeField] 
-        private ThumbnailTileView m_thumbnailTilePrefab;
-        [SerializeField] 
-        private Button m_confirmButton;
-        [SerializeField] 
-        private Button m_startButton;
+        private WorkoutControllerView m_workoutControllerView;
         
         private List<IExercise> m_exercises = new();
-        private List<IExercise> m_selectedExercises = new();
-        private List<ThumbnailTileView> m_thumbnailTileViews = new();
-        
-        private readonly Dictionary<string, (int intVal, float floatVal)> userValues = new();
 
         private void Awake()
         {
@@ -41,86 +27,19 @@ namespace Scenes.Scripts
                 .Select(ExerciseFactory.Create)
                 .ToList();
             
-            foreach (var exercise in m_exercises)
-            {
-                var tile = Instantiate(m_thumbnailTilePrefab, m_gridContent);
-                
-                tile.Initialize(exercise);
-                
-                tile.ThumbnailClicked += HandleThumbnailClicked;
-                
-                m_thumbnailTileViews.Add(tile);
-            }
-        }
-
-        private void SetupWorkoutButtons()
-        {
-            m_confirmButton.onClick.RemoveAllListeners();
+            m_workoutControllerView.ShowThumbnails(m_exercises);
             
-            m_startButton.onClick.RemoveAllListeners();
-            m_startButton.onClick.AddListener(() =>
-            {
-                //ApplyUserConfigs(); // na wszelki wypadek
-                StopAllCoroutines();
-                StartCoroutine(RunWorkout());
-            });
-        }
-        
-        private void HandleThumbnailClicked(ThumbnailTileView tile)
-        {
-            OnTileClicked(tile);
+            m_workoutControllerView.WorkoutStarted += OnWorkoutStarted;
         }
 
-        private void OnDestroy()
+        private void OnWorkoutStarted(IExercise[] exercises)
         {
-            foreach (var tile in m_thumbnailTileViews)
-            {
-                tile.ThumbnailClicked -= HandleThumbnailClicked;
-            }
-        }
-        
-        private void OnTileClicked(ThumbnailTileView tile)
-        {
-            var exercise = tile.Exercise;
-            
-            if (m_selectedExercises.Contains(exercise))
-            {
-                tile.Display(false);
-                m_selectedExercises.Remove(exercise);
-                return;
-            }
-
-            tile.Display(true);
-            m_selectedExercises.Add(exercise);
+            StartCoroutine(RunWorkout(exercises));
         }
 
-        // private void ApplyUserConfigs()
-        // {
-        //     foreach (var ex in m_selectedExercises)
-        //     {
-        //       
-        //         switch (ex.Type)
-        //         {
-        //             case ExerciseType.Time:
-        //                 var seconds = tuple.floatVal > 0 ? tuple.floatVal : 30f;
-        //                 ex.ConfigureFromUser(0, seconds);
-        //                 break;
-        //             case ExerciseType.Repetitions:
-        //                 var reps = tuple.intVal > 0 ? tuple.intVal : 1;
-        //                 ex.ConfigureFromUser(reps, 0);
-        //                 break;
-        //             case ExerciseType.Kcal:
-        //                 var kcal = tuple.intVal > 0 ? tuple.intVal : 1;
-        //                 ex.ConfigureFromUser(kcal, 0);
-        //                 break;
-        //         }
-        //         ex.Reset();
-        //     }
-        // }
-
-        private IEnumerator RunWorkout()
+        private IEnumerator RunWorkout(IExercise[] exercises)
         {
-            foreach (var ex in m_selectedExercises)
+            foreach (var ex in exercises)
             {
                 switch (ex)
                 {
