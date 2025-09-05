@@ -171,8 +171,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 40.005005}
-  m_SizeDelta: {x: -70, y: -132.24998}
+  m_AnchoredPosition: {x: 0, y: 109.41498}
+  m_SizeDelta: {x: -100, y: -450.82996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &110882383
 MonoBehaviour:
@@ -478,7 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
-  m_HorizontalFit: 2
+  m_HorizontalFit: 0
   m_VerticalFit: 2
 --- !u!114 &179903327
 MonoBehaviour:
@@ -503,7 +503,7 @@ MonoBehaviour:
   m_CellSize: {x: 250, y: 250}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
-  m_ConstraintCount: 2
+  m_ConstraintCount: 3
 --- !u!224 &322720718 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6322868782875746817, guid: 7d48122a20a5a25498f3fc58405472c6, type: 3}
@@ -685,7 +685,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: NaN}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &374436751
@@ -986,7 +986,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -485.68}
+  m_AnchoredPosition: {x: 0, y: -727.5}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &439109683
@@ -1154,7 +1154,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 374436750}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.30474275
+  m_Size: 0.709744
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2223,6 +2223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1290102362}
+  - component: {fileID: 1290102363}
   m_Layer: 5
   m_Name: Workout
   m_TagString: Untagged
@@ -2249,6 +2250,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1290102363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290102361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be1075f338b94697938df062667e5c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.WorkoutController
+  m_workoutData: {fileID: 11400000, guid: 94709ddf2df0a094d8b5149e32da3aff, type: 2}
+  m_gridContent: {fileID: 179903325}
+  m_tilePrefab: {fileID: 621141131897332523, guid: 7d48122a20a5a25498f3fc58405472c6, type: 3}
+  m_thumbnailTilePrefab: {fileID: 365263186805479025, guid: 7d48122a20a5a25498f3fc58405472c6, type: 3}
+  m_confirmButton: {fileID: 0}
+  m_startButton: {fileID: 0}
 --- !u!224 &1312494470 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6322868782875746817, guid: 7d48122a20a5a25498f3fc58405472c6, type: 3}
@@ -3465,7 +3484,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 2
   m_MatchWidthOrHeight: 0.606
   m_PhysicalUnit: 3
@@ -3703,8 +3722,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3794,7 +3813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: NaN, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2050009731

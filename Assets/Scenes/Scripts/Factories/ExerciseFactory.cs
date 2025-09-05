@@ -13,8 +13,10 @@ namespace Scenes.Scripts.Factories
 
             return def.ExerciseType switch
             {
-                ExerciseType.Time => new TimeExercise(),
-                ExerciseType.Repetitions => new RepetitionsExercise(),
+                ExerciseType.Time => new TimeExercise(def),
+                ExerciseType.Repetitions => new RepetitionsExercise(def),
+                ExerciseType.Kcal => new EmptyExercise(def),
+                ExerciseType.Distance => new EmptyExercise(def),
                 _ => throw new NotSupportedException($"Unsupported ExerciseType: {def.ExerciseType}")
             };
         }

@@ -1,5 +1,4 @@
 using System;
-using Scenes.Scripts.Data;
 using Scenes.Scripts.Models;
 using TMPro;
 using UnityEngine;

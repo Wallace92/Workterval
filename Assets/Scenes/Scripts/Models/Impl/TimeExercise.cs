@@ -13,10 +13,15 @@ namespace Scenes.Scripts.Models.Impl
         public float Progress { get; private set;}
         public bool IsCompleted { get; private set;}
 
-        public void Initialize(ExerciseDefinition definition, float durationInSeconds)
+        public TimeExercise(ExerciseDefinition definition)
         {
             Title = definition.Title;
             Icon = definition.Image;
+        }
+
+        public void Initialize(ExerciseDefinition definition, float durationInSeconds)
+        {
+            
             DurationInSeconds = (int)durationInSeconds;
             Progress = 0f;
             IsCompleted = false;

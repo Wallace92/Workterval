@@ -23,12 +23,15 @@ namespace Scenes.Scripts
         [SerializeField] 
         private ExerciseTileView m_tilePrefab;
         [SerializeField] 
+        private ThumbnailTileView m_thumbnailTilePrefab;
+        [SerializeField] 
         private Button m_confirmButton;
         [SerializeField] 
         private Button m_startButton;
         
         private List<IExercise> m_exercises = new();
         private List<IExercise> m_selectedExercises = new();
+        private List<ThumbnailTileView> m_thumbnailTileViews = new();
         
         private readonly Dictionary<string, (int intVal, float floatVal)> userValues = new();
 
@@ -40,13 +43,19 @@ namespace Scenes.Scripts
             
             foreach (var exercise in m_exercises)
             {
-                var tile = Instantiate(m_tilePrefab, m_gridContent);
+                var tile = Instantiate(m_thumbnailTilePrefab, m_gridContent);
                 
-                tile.Bind(exercise, OnTileClicked);
+                tile.Initialize(exercise);
+                
+                tile.ThumbnailClicked += HandleThumbnailClicked;
+                
+                m_thumbnailTileViews.Add(tile);
             }
-            
+        }
+
+        private void SetupWorkoutButtons()
+        {
             m_confirmButton.onClick.RemoveAllListeners();
-           // m_confirmButton.onClick.AddListener(ApplyUserConfigs);
             
             m_startButton.onClick.RemoveAllListeners();
             m_startButton.onClick.AddListener(() =>
@@ -57,8 +66,31 @@ namespace Scenes.Scripts
             });
         }
         
-        private void OnTileClicked(IExercise exercise)
+        private void HandleThumbnailClicked(ThumbnailTileView tile)
         {
+            OnTileClicked(tile);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var tile in m_thumbnailTileViews)
+            {
+                tile.ThumbnailClicked -= HandleThumbnailClicked;
+            }
+        }
+        
+        private void OnTileClicked(ThumbnailTileView tile)
+        {
+            var exercise = tile.Exercise;
+            
+            if (m_selectedExercises.Contains(exercise))
+            {
+                tile.Display(false);
+                m_selectedExercises.Remove(exercise);
+                return;
+            }
+
+            tile.Display(true);
             m_selectedExercises.Add(exercise);
         }
 
