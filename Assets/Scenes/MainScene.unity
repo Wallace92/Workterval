@@ -1707,8 +1707,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Factories.ExerciseTileViewFactory
   m_wallBallTilePrefab: {fileID: 717616858407374505, guid: 3b6dff772049b644ea0c83d58be4a446, type: 3}
-  m_rowTilePrefab: {fileID: 0}
-  m_burpeePrefab: {fileID: 0}
+  m_rowTilePrefab: {fileID: 4480053581205239270, guid: 685fd6bb9e692ee4085d50ab90ce3ad6, type: 3}
+  m_burpeePrefab: {fileID: 8984533919700530397, guid: 4935589ec7b1053438e71200b69270ca, type: 3}
   m_emptyExerciseTile: {fileID: 0}
 --- !u!224 &1312494470 stripped
 RectTransform:

@@ -4,6 +4,8 @@ namespace Scenes.Scripts.Data
 {
     public class BurpeeExercise : Exercise, IBurpeeExercise
     {
+        public int Repetitions { get; set; }
+        
         public BurpeeExercise(ExerciseDefinition definition) : base(definition)
         {
         }
@@ -11,5 +13,6 @@ namespace Scenes.Scripts.Data
 
     public interface IBurpeeExercise
     {
+        int Repetitions { get; set; }
     }
 }

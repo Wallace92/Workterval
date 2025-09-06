@@ -29,6 +29,23 @@ namespace Scenes.Scripts.Views
             
             m_repsButton.image.color = Color.green;
         }
+        
+        public override void Initialize(IExercise exercise)
+        {
+            base.Initialize(exercise);
+            
+            m_exercise = exercise as WallBallExercise;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            m_repsButton.onClick.RemoveListener(OnRepsButtonClicked);
+            m_maxButton.onClick.RemoveListener(OnMaxButtonClicked);
+            
+            m_repsInputField.onEndEdit.RemoveListener(OnRepsEdited);
+        }
 
         private void OnRepsEdited(string _)
         {
@@ -56,26 +73,6 @@ namespace Scenes.Scripts.Views
             m_repsButton.image.color = Color.green;
             
             m_repsInputField.gameObject.SetActive(true);
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            
-            m_repsButton.onClick.RemoveListener(OnRepsButtonClicked);
-            m_maxButton.onClick.RemoveListener(OnMaxButtonClicked);
-        }
-
-        private void OnDropdownValueChanged(int arg0)
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        public override void Initialize(IExercise exercise)
-        {
-            base.Initialize(exercise);
-            
-            m_exercise = exercise as WallBallExercise;
         }
     }
 }

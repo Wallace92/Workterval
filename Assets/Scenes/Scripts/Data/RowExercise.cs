@@ -4,6 +4,8 @@ namespace Scenes.Scripts.Data
 {
     public class RowExercise : Exercise, IRowExercise
     {
+        public int Kcal { get; set; }
+        
         public RowExercise(ExerciseDefinition definition) : base(definition)
         {
         }
@@ -11,5 +13,6 @@ namespace Scenes.Scripts.Data
 
     public interface IRowExercise
     {
+        int Kcal { get; set; }
     }
 }

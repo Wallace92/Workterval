@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Scenes.Scripts.Data;
 using Scenes.Scripts.Factories;
 using Scenes.Scripts.Models;
-using Scenes.Scripts.Models.Impl;
 using UnityEngine;
 
 namespace Scenes.Scripts
@@ -34,9 +32,22 @@ namespace Scenes.Scripts
         {
             foreach (var exercise in exercises)
             {
-                if (exercise is IWallBallExercise wallBallExercise)
+                switch (exercise)
                 {
-                    Debug.Log($"Wall Ball: {wallBallExercise.Repetitions} reps");
+                    case IWallBallExercise wallBallExercise:
+                    {
+                        var reps = wallBallExercise.Condition == ExerciseCondition.Max
+                            ? "Max"
+                            : wallBallExercise.Repetitions.ToString("F1") + "s";
+                        Debug.Log($"Wall Ball: {reps} reps");
+                        break;
+                    }
+                    case IRowExercise rowExercise:
+                        Debug.Log($"Row: {rowExercise.Kcal} kcal");
+                        break;
+                    case IBurpeeExercise burpeeExercise:
+                        Debug.Log($"Burpee: {burpeeExercise.Repetitions} reps");
+                        break;
                 }
             }
             //StartCoroutine(RunWorkout(exercises));
