@@ -16,6 +16,8 @@ namespace Scenes.Scripts.Models.Impl
         {
             Title = definition.Title;
             Icon = definition.Image;
+            
+            Debug.Log($"EmptyExercise created: {Title}");
         }
 
         public void Initialize(ExerciseDefinition definition, float param)

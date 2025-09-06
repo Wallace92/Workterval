@@ -1,4 +1,3 @@
-using Scenes.Scripts.Views;
 using UnityEngine;
 
 namespace Scenes.Scripts.Data

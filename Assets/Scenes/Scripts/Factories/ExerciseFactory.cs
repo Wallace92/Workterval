@@ -9,15 +9,12 @@ namespace Scenes.Scripts.Factories
     {
         public static IExercise Create(ExerciseDefinition def)
         {
-            if (def == null) throw new ArgumentNullException(nameof(def));
-
             return def.ExerciseType switch
             {
-                ExerciseType.Time => new TimeExercise(def),
-                ExerciseType.Repetitions => new RepetitionsExercise(def),
-                ExerciseType.Kcal => new EmptyExercise(def),
-                ExerciseType.Distance => new EmptyExercise(def),
-                _ => throw new NotSupportedException($"Unsupported ExerciseType: {def.ExerciseType}")
+                ExerciseType.WallBall => new WallBallExercise(def),
+                ExerciseType.Row => new RowExercise(def),
+                ExerciseType.Burpees => new BurpeeExercise(def),
+                _ => new EmptyExercise(def)
             };
         }
     }

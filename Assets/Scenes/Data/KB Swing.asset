@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Data.ExerciseDefinition
   Title: KB Swing
   Image: {fileID: 0}
-  ExerciseType: 1
+  ExerciseType: 2

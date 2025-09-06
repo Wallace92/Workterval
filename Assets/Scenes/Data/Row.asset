@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54901ba07b394208b27c8b5ec3717c37, type: 3}
-  m_Name: KB Snatch
+  m_Name: Row
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Data.ExerciseDefinition
-  Title: KB Snatch
+  Title: Row
   Image: {fileID: 0}
-  ExerciseType: 1
+  ExerciseType: 5

@@ -21,7 +21,6 @@ namespace Scenes.Scripts.Models.Impl
 
         public void Initialize(ExerciseDefinition definition, float durationInSeconds)
         {
-            
             DurationInSeconds = (int)durationInSeconds;
             Progress = 0f;
             IsCompleted = false;

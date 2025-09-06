@@ -7,11 +7,5 @@ namespace Scenes.Scripts.Models
     {
         string Title { get; }
         Sprite Icon { get; }
-        string Description { get; }
-        float Progress { get; }
-        bool IsCompleted { get; }
-        
-        void OnPrimaryAction();
-        void Reset();
     }
 }
