@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scenes.Scripts.Factories;
 using Scenes.Scripts.Models;
 using Scenes.Scripts.Views;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace Scenes.Scripts
         public event Action<IExercise[]> WorkoutStarted = delegate { };
         
         private readonly List<ThumbnailTileView> m_thumbnailTileViews = new();
-        private readonly List<ExerciseTileView> m_exerciseTileViews = new();
+        private readonly List<IExerciseTile> m_exerciseTileViews = new();
         private readonly List<IExercise> m_selectedExercises = new();
         
         [Header("Thumbnail View")]
@@ -36,6 +37,8 @@ namespace Scenes.Scripts
         private Button m_workoutButton;
         [SerializeField] 
         private Button m_startButton;
+        [SerializeField]
+        private ExerciseTileViewFactory m_exerciseTileViewFactory;
 
         private void Awake()
         {
@@ -105,9 +108,10 @@ namespace Scenes.Scripts
 
         private void InstantiateExerciseTile(IExercise exercise)
         {
-            // Need factory here to create different types of exercises
-            var tile = Instantiate(m_exerciseTilePrefab, m_exerciseContainer);
-            tile.Initialize(exercise);
+            var tile = m_exerciseTileViewFactory.Create(exercise, m_exerciseContainer);
+            
+            //var tile = Instantiate(m_exerciseTilePrefab, m_exerciseContainer);
+            //tile.Initialize(exercise);
             
             m_exerciseTileViews.Add(tile);
         }
@@ -121,7 +125,7 @@ namespace Scenes.Scripts
             }
             
             m_exerciseTileViews.Remove(tile);
-            Destroy(tile.gameObject);
+            Destroy(tile.GameObject);
         }
     }
 }

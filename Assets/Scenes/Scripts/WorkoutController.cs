@@ -32,6 +32,13 @@ namespace Scenes.Scripts
 
         private void OnWorkoutStarted(IExercise[] exercises)
         {
+            foreach (var exercise in exercises)
+            {
+                if (exercise is IWallBallExercise wallBallExercise)
+                {
+                    Debug.Log($"Wall Ball: {wallBallExercise.Repetitions} reps");
+                }
+            }
             //StartCoroutine(RunWorkout(exercises));
         }
 

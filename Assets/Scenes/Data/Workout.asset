@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Workout
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Data.WorkoutData
   Exercises:
-  - {fileID: 11400000, guid: bf81283e42d9db64ab28e8937ae79cba, type: 2}
+  - {fileID: 11400000, guid: 00882fc59f9d9584699b98d88f7cdc67, type: 2}
   - {fileID: 11400000, guid: ea474021efa794943ab3928842d86298, type: 2}
-  - {fileID: 11400000, guid: 898478e2f2e18e849914866fe67dbb89, type: 2}
   - {fileID: 11400000, guid: c6536027e159e7e44909e88044ad3d82, type: 2}
+  - {fileID: 11400000, guid: 898478e2f2e18e849914866fe67dbb89, type: 2}

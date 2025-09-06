@@ -5,7 +5,8 @@ namespace Scenes.Scripts.Data
 {
     public class WallBallExercise : Exercise, IWallBallExercise
     {
-        public ExerciseCondition Condition { get; }
+        public ExerciseCondition Condition { get; set; }
+        public int Repetitions { get; set; }
         
         public WallBallExercise(ExerciseDefinition definition) : base(definition)
         {
@@ -15,5 +16,6 @@ namespace Scenes.Scripts.Data
     public interface IWallBallExercise
     {
         ExerciseCondition Condition { get; }
+        int Repetitions { get; set; }
     }
 }

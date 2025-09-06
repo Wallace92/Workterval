@@ -5,7 +5,7 @@ using Scenes.Scripts.Models.Impl;
 
 namespace Scenes.Scripts.Factories
 {
-    public class ExerciseFactory
+    public static class ExerciseFactory
     {
         public static IExercise Create(ExerciseDefinition def)
         {

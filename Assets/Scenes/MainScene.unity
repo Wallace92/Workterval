@@ -1632,6 +1632,7 @@ GameObject:
   - component: {fileID: 1290102362}
   - component: {fileID: 1290102363}
   - component: {fileID: 1290102364}
+  - component: {fileID: 1290102365}
   m_Layer: 5
   m_Name: Workout
   m_TagString: Untagged
@@ -1692,6 +1693,23 @@ MonoBehaviour:
   m_exerciseTilesParent: {fileID: 537981675}
   m_workoutButton: {fileID: 439109683}
   m_startButton: {fileID: 1208742476}
+  m_exerciseTileViewFactory: {fileID: 1290102365}
+--- !u!114 &1290102365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290102361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1c4922c99e48ada9633ff213b45058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Factories.ExerciseTileViewFactory
+  m_wallBallTilePrefab: {fileID: 717616858407374505, guid: 3b6dff772049b644ea0c83d58be4a446, type: 3}
+  m_rowTilePrefab: {fileID: 0}
+  m_burpeePrefab: {fileID: 0}
+  m_emptyExerciseTile: {fileID: 0}
 --- !u!224 &1312494470 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6322868782875746817, guid: 7d48122a20a5a25498f3fc58405472c6, type: 3}
@@ -1779,7 +1797,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2050009731}
   m_HandleRect: {fileID: 2050009730}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
