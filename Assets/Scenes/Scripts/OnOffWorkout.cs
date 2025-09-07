@@ -18,6 +18,8 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_rounds;
         [SerializeField]
         private TextMeshProUGUI m_totalTime;
+        [SerializeField]
+        private TextMeshProUGUI m_nextPhaseText;
 
         private bool m_workoutActive;
         private bool m_isOnPhase;          
@@ -32,11 +34,8 @@ namespace Scenes.Scripts
                 return;
             }
             
-            m_totalElapsed += Time.deltaTime;
-            m_totalTime.text = FormatMmss(Mathf.FloorToInt(m_totalElapsed));
-
-            m_phaseRemaining -= Time.deltaTime;
-            m_onTime.text = Mathf.Max(0, Mathf.CeilToInt(m_phaseRemaining)).ToString();
+            UpdateTotalTime();
+            UpdatePhaseCountdown();
 
             if (m_phaseRemaining > 0f)
             {
@@ -45,32 +44,14 @@ namespace Scenes.Scripts
 
             if (m_isOnPhase)
             {
-                m_isOnPhase = false;
-                m_phaseRemaining = OffSeconds;
-
-                m_offTime.text = OnSeconds.ToString(); 
-                m_onTime.text = Mathf.CeilToInt(m_phaseRemaining).ToString(); 
+                SwitchToOffPhase();
             }
             else
             {
-                m_currentRound++;
-                m_rounds.text = $"{Mathf.Min(m_currentRound, Rounds)}/{Rounds}";
-
-                if (m_currentRound > Rounds)
-                {
-                    m_workoutActive = false;
-                    m_onTime.text = "0";
-                    return;
-                }
-
-                m_isOnPhase = true;
-                m_phaseRemaining = OnSeconds;
-
-                m_offTime.text = OffSeconds.ToString(); 
-                m_onTime.text = Mathf.CeilToInt(m_phaseRemaining).ToString();
+                SwitchToOnPhase();
             }
         }
-        
+
         public void StartWorkout(IOnOffWorkout workout)
         {
             OnSeconds = workout.OnSeconds;
@@ -89,10 +70,57 @@ namespace Scenes.Scripts
             m_totalTime.text = "00:00";
         }
         
+        private void SwitchToOffPhase()
+        {
+            m_isOnPhase = false;
+            m_phaseRemaining = OffSeconds;
+
+            m_offTime.text = OnSeconds.ToString();
+            m_onTime.text = FormatMmss(Mathf.CeilToInt(m_phaseRemaining));
+        }
+        
+        private void SwitchToOnPhase()
+        {
+            m_currentRound++;
+            
+            m_rounds.text = $"{m_currentRound}/{Rounds}";
+
+            if (m_currentRound > Rounds)
+            {
+                WorkoutCompleted();
+                return;
+            }
+
+            m_isOnPhase = true;
+            m_phaseRemaining = OnSeconds;
+
+            m_offTime.text = OffSeconds.ToString(); 
+            m_onTime.text = Mathf.CeilToInt(m_phaseRemaining).ToString();
+        }
+        
+        private void WorkoutCompleted()
+        {
+            m_workoutActive = false;
+            m_onTime.text = "0";
+        }
+        
+        private void UpdateTotalTime()
+        {
+            m_totalElapsed += Time.deltaTime;
+            m_totalTime.text = FormatMmss(Mathf.FloorToInt(m_totalElapsed));
+        }
+        
+        private void UpdatePhaseCountdown()
+        {
+            m_phaseRemaining -= Time.deltaTime;
+            m_onTime.text = FormatMmss(Mathf.Max(0, Mathf.CeilToInt(m_phaseRemaining)));
+        }
+        
         private static string FormatMmss(int seconds)
         {
-            int m = seconds / 60;
-            int s = seconds % 60;
+            var m = seconds / 60;
+            var s = seconds % 60;
+            
             return $"{m:00}:{s:00}";
         }
     }
