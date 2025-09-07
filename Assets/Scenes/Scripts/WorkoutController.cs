@@ -52,6 +52,7 @@ namespace Scenes.Scripts
                 m_workoutPreviews.Add(workoutPreview);
             }
             
+            m_onOffWorkout.gameObject.SetActive(true);
             m_onOffWorkout.StartWorkout(onOffWorkout);
         }
 

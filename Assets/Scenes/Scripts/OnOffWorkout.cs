@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -5,10 +6,11 @@ namespace Scenes.Scripts
 {
     public class OnOffWorkout : MonoBehaviour, IOnOffWorkout
     {
-        public int OnSeconds { get; private set; }
-        public int OffSeconds { get; private set; }
-        public int Rounds { get; private set; }
-        public int TotalSeconds { get; private set; }
+        private enum WorkoutPhase
+        {
+            On, 
+            Off
+        }
         
         [SerializeField] 
         private TextMeshProUGUI m_onTime;
@@ -22,10 +24,15 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_nextPhaseText;
 
         private bool m_workoutActive;
-        private bool m_isOnPhase;          
         private int m_currentRound;
         private float m_phaseRemaining;      
-        private float m_totalElapsed;    
+        private float m_totalElapsed;
+        private WorkoutPhase m_phase;
+        
+        public int OnSeconds { get; private set; }
+        public int OffSeconds { get; private set; }
+        public int Rounds { get; private set; }
+        public int TotalSeconds { get; private set; }
         
         private void Update()
         {
@@ -34,15 +41,14 @@ namespace Scenes.Scripts
                 return;
             }
             
-            UpdateTotalTime();
-            UpdatePhaseCountdown();
-
+            UpdateTimes();
+            
             if (m_phaseRemaining > 0f)
             {
                 return;
             }
 
-            if (m_isOnPhase)
+            if (m_phase == WorkoutPhase.On)
             {
                 SwitchToOffPhase();
             }
@@ -60,23 +66,33 @@ namespace Scenes.Scripts
             TotalSeconds = workout.TotalSeconds;
             
             m_currentRound = 1;
-            m_isOnPhase = true;
+            m_phase = WorkoutPhase.On;
             m_phaseRemaining = OnSeconds;
             m_totalElapsed = 0f;
             
             m_workoutActive = true;
-            m_onTime.text = workout.OnSeconds.ToString();
+            m_onTime.text = FormatMmss(workout.OnSeconds);
+            m_offTime.text = FormatMmss(workout.OffSeconds);
             m_rounds.text = $"{m_currentRound}/{Rounds}";
             m_totalTime.text = "00:00";
+            
+            SetNextPhaseText();
+        }
+
+        private void SetNextPhaseText()
+        {
+            m_nextPhaseText.text = m_phase == WorkoutPhase.On ? "Work" : "Rest";
         }
         
         private void SwitchToOffPhase()
         {
-            m_isOnPhase = false;
+            m_phase = WorkoutPhase.Off;
             m_phaseRemaining = OffSeconds;
 
-            m_offTime.text = OnSeconds.ToString();
+            m_offTime.text = FormatMmss(OnSeconds);
             m_onTime.text = FormatMmss(Mathf.CeilToInt(m_phaseRemaining));
+            
+            SetNextPhaseText();
         }
         
         private void SwitchToOnPhase()
@@ -91,27 +107,30 @@ namespace Scenes.Scripts
                 return;
             }
 
-            m_isOnPhase = true;
+            m_phase = WorkoutPhase.On;
             m_phaseRemaining = OnSeconds;
+            
+            SetNextPhaseText();
 
-            m_offTime.text = OffSeconds.ToString(); 
-            m_onTime.text = Mathf.CeilToInt(m_phaseRemaining).ToString();
+            m_offTime.text = FormatMmss(OffSeconds); 
+            m_onTime.text = FormatMmss(Mathf.CeilToInt(m_phaseRemaining));
         }
         
         private void WorkoutCompleted()
         {
             m_workoutActive = false;
-            m_onTime.text = "0";
+            m_onTime.text = "Completed";
+            m_onTime.fontSize = 150;
+            m_offTime.transform.parent.gameObject.SetActive(false);
+            m_nextPhaseText.text = "Well done!";
+            m_rounds.transform.gameObject.SetActive(false);
         }
         
-        private void UpdateTotalTime()
+        private void UpdateTimes()
         {
             m_totalElapsed += Time.deltaTime;
             m_totalTime.text = FormatMmss(Mathf.FloorToInt(m_totalElapsed));
-        }
-        
-        private void UpdatePhaseCountdown()
-        {
+            
             m_phaseRemaining -= Time.deltaTime;
             m_onTime.text = FormatMmss(Mathf.Max(0, Mathf.CeilToInt(m_phaseRemaining)));
         }
