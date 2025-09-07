@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scenes.Scripts.Data;
@@ -5,6 +6,7 @@ using Scenes.Scripts.Factories;
 using Scenes.Scripts.Models;
 using Scenes.Scripts.Views;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scenes.Scripts
 {
@@ -23,6 +25,8 @@ namespace Scenes.Scripts
         private Transform m_workoutTileContainer;
         [SerializeField]
         private OnOffWorkout m_onOffWorkout;
+        [SerializeField]
+        private Button m_exerciseButton;
         
         private List<IExercise> m_exercises = new();
 
@@ -35,6 +39,19 @@ namespace Scenes.Scripts
             m_workoutControllerView.ShowThumbnails(m_exercises);
             
             m_workoutControllerView.WorkoutStarted += OnWorkoutStarted;
+            m_exerciseButton.onClick.AddListener(OnExerciseButtonClicked);
+        }
+
+        private void OnDestroy()
+        {
+            m_workoutControllerView.WorkoutStarted -= OnWorkoutStarted;
+            
+            foreach (var preview in m_workoutPreviews)
+            {
+                Destroy(preview.gameObject);
+            }
+            
+            m_exerciseButton.onClick.RemoveListener(OnExerciseButtonClicked);
         }
 
         private void OnWorkoutStarted(IExercise[] exercises, IWorkout workout)
@@ -56,13 +73,11 @@ namespace Scenes.Scripts
             m_onOffWorkout.StartWorkout(onOffWorkout);
         }
 
-        private void OnDestroy()
+        private void OnExerciseButtonClicked()
         {
-            m_workoutControllerView.WorkoutStarted -= OnWorkoutStarted;
-            
-            foreach (var preview in m_workoutPreviews)
+            foreach (var workoutPreview in m_workoutPreviews)
             {
-                Destroy(preview.gameObject);
+                workoutPreview.Toggle();
             }
         }
     }
