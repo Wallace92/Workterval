@@ -28,8 +28,11 @@ namespace Scenes.Scripts
             m_workoutControllerView.WorkoutStarted += OnWorkoutStarted;
         }
 
-        private void OnWorkoutStarted(IExercise[] exercises)
+        private void OnWorkoutStarted(IExercise[] exercises, IWorkout workout)
         {
+            var onOffWorkout = workout as IOnOffWorkout;
+            
+            
             foreach (var exercise in exercises)
             {
                 switch (exercise)

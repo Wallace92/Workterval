@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Scenes.Scripts
 {
-    public class WorkoutDetails : MonoBehaviour
+    public class WorkoutDetails : MonoBehaviour, IOnOffWorkout
     {
         [SerializeField]
         private Button m_activationButton;
@@ -18,6 +18,11 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_workoutTime;
         [SerializeField]
         private RoundsCounter m_roundsCounter;
+        
+        public int OnSeconds => int.TryParse(m_onInputField.text, out var onVal) ? onVal : 0;
+        public int OffSeconds => int.TryParse(m_offInputField.text, out var offVal) ? offVal : 0;
+        public int Rounds => m_roundsCounter.Rounds;
+        public int TotalSeconds => (OnSeconds + OffSeconds) * Rounds;
         
         private void Awake()
         {
@@ -33,6 +38,8 @@ namespace Scenes.Scripts
             m_activationButton.onClick.RemoveListener(OnActivationButtonClicked);
             m_onInputField.onEndEdit.RemoveListener(OnOnEdited);
             m_offInputField.onEndEdit.RemoveListener(OnOffEdited);
+            
+            m_roundsCounter.RoundsChanged -= OnRoundsChanged;
         }
 
         private void OnRoundsChanged()

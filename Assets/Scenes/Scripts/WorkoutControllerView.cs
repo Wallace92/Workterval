@@ -4,14 +4,13 @@ using Scenes.Scripts.Factories;
 using Scenes.Scripts.Models;
 using Scenes.Scripts.Views;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Scenes.Scripts
 {
     public class WorkoutControllerView : MonoBehaviour
     {
-        public event Action<IExercise[]> WorkoutStarted = delegate { };
+        public event Action<IExercise[], IOnOffWorkout> WorkoutStarted = delegate { };
         
         private readonly List<ThumbnailTileView> m_thumbnailTileViews = new();
         private readonly List<IExerciseTile> m_exerciseTileViews = new();
@@ -28,17 +27,18 @@ namespace Scenes.Scripts
         [Header("Exercise View")]
         [SerializeField] 
         private Transform m_exerciseContainer; 
-        [SerializeField] 
-        private ExerciseTileView m_exerciseTilePrefab;
         [SerializeField]
         private GameObject m_exerciseTilesParent;
       
+        [Header("Controls")]
         [SerializeField] 
         private Button m_workoutButton;
         [SerializeField] 
         private Button m_startButton;
         [SerializeField]
         private ExerciseTileViewFactory m_exerciseTileViewFactory;
+        [SerializeField]
+        private WorkoutDetails m_workoutDetails;
 
         private void Awake()
         {
@@ -74,7 +74,7 @@ namespace Scenes.Scripts
         {
             m_exerciseTilesParent.gameObject.SetActive(false);
             
-            WorkoutStarted?.Invoke(m_selectedExercises.ToArray());
+            WorkoutStarted?.Invoke(m_selectedExercises.ToArray(), m_workoutDetails);
         }
         
         private void OnWorkoutButton()
@@ -109,9 +109,6 @@ namespace Scenes.Scripts
         private void InstantiateExerciseTile(IExercise exercise)
         {
             var tile = m_exerciseTileViewFactory.Create(exercise, m_exerciseContainer);
-            
-            //var tile = Instantiate(m_exerciseTilePrefab, m_exerciseContainer);
-            //tile.Initialize(exercise);
             
             m_exerciseTileViews.Add(tile);
         }
