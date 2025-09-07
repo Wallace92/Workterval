@@ -7,7 +7,7 @@ namespace Scenes.Scripts
 {
     public class RoundsCounter : MonoBehaviour
     {
-        public event Action<int> RoundsChanged = delegate { };
+        public event Action RoundsChanged = delegate { };
         
         [Header("UI")]
         [SerializeField] 
@@ -55,7 +55,7 @@ namespace Scenes.Scripts
             m_roundValue = rounds;
             m_roundsTMP.text = rounds.ToString();
             
-            RoundsChanged(Rounds);
+            RoundsChanged.Invoke();
         }
     }
 }

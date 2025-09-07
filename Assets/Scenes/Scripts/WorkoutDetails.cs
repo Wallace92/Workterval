@@ -13,15 +13,12 @@ namespace Scenes.Scripts
         [SerializeField]
         private TMP_InputField m_offInputField;
         [SerializeField]
-        private Button m_incRoundsButton;
-        [SerializeField]
-        private Button m_decRoundsButton;
-        [SerializeField]
-        private TextMeshProUGUI m_roundsTMP;
-        [SerializeField]
         private Transform m_workoutContainer;
+        [SerializeField] 
+        private TextMeshProUGUI m_workoutTime;
         [SerializeField]
         private RoundsCounter m_roundsCounter;
+        
         private void Awake()
         {
             m_activationButton.onClick.AddListener(OnActivationButtonClicked);
@@ -31,11 +28,6 @@ namespace Scenes.Scripts
             m_roundsCounter.RoundsChanged += OnRoundsChanged;
         }
 
-        private void OnRoundsChanged(int rounds)
-        {
-            Debug.Log($"OnRoundsChanged: {rounds}");
-        }
-
         private void OnDestroy()
         {
             m_activationButton.onClick.RemoveListener(OnActivationButtonClicked);
@@ -43,14 +35,32 @@ namespace Scenes.Scripts
             m_offInputField.onEndEdit.RemoveListener(OnOffEdited);
         }
 
+        private void OnRoundsChanged()
+        {
+            SetTotalTime();
+        }
+
         private void OnOffEdited(string arg0)
         {
-           //
+            SetTotalTime();
         }
 
         private void OnOnEdited(string arg0)
         {
-            //throw new NotImplementedException();
+            SetTotalTime();
+        }
+
+        private void SetTotalTime()
+        {
+            var roundsCounter = m_roundsCounter.Rounds;
+            var onSeconds = int.TryParse(m_onInputField.text, out var onVal) ? onVal : 0;
+            var offSeconds = int.TryParse(m_offInputField.text, out var offVal) ? offVal : 0;
+            var totalSeconds = (onSeconds + offSeconds) * roundsCounter;
+
+            var minutes = totalSeconds / 60;
+            var seconds = totalSeconds % 60;
+
+            m_workoutTime.text = $"{minutes:D2}:{seconds:D2}";
         }
 
         private void OnActivationButtonClicked()
