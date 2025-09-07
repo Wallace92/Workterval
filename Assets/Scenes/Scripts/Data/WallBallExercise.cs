@@ -11,6 +11,11 @@ namespace Scenes.Scripts.Data
         public WallBallExercise(ExerciseDefinition definition) : base(definition)
         {
         }
+        
+        public override string ToString()
+        {
+            return $"{Repetitions} Reps - {Condition}";
+        }
     }
 
     public interface IWallBallExercise

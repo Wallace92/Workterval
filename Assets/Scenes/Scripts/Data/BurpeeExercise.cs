@@ -9,6 +9,11 @@ namespace Scenes.Scripts.Data
         public BurpeeExercise(ExerciseDefinition definition) : base(definition)
         {
         }
+        
+        public override string ToString()
+        {
+            return $"{Repetitions} Reps";
+        }
     }
 
     public interface IBurpeeExercise

@@ -1,5 +1,4 @@
 using System;
-using Scenes.Scripts.Data;
 using Scenes.Scripts.Models;
 using TMPro;
 using UnityEngine;
@@ -17,6 +16,8 @@ namespace Scenes.Scripts.Views
 
         [SerializeField]
         private TextMeshProUGUI m_title;
+        [SerializeField]
+        private TextMeshProUGUI m_description;
         
         [SerializeField]
         private Button m_thumbnailButton;

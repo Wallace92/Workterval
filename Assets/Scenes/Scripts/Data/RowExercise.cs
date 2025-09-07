@@ -9,6 +9,11 @@ namespace Scenes.Scripts.Data
         public RowExercise(ExerciseDefinition definition) : base(definition)
         {
         }
+        
+        public override string ToString()
+        {
+            return $"{Kcal} Kcal";
+        }
     }
 
     public interface IRowExercise
