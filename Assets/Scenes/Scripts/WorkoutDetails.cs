@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,14 +20,20 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_roundsTMP;
         [SerializeField]
         private Transform m_workoutContainer;
-        
+        [SerializeField]
+        private RoundsCounter m_roundsCounter;
         private void Awake()
         {
             m_activationButton.onClick.AddListener(OnActivationButtonClicked);
             m_onInputField.onEndEdit.AddListener(OnOnEdited);
             m_offInputField.onEndEdit.AddListener(OnOffEdited);
-            m_incRoundsButton.onClick.AddListener(OnIncRoundsClicked);
-            m_decRoundsButton.onClick.AddListener(OnDecRoundsClicked);
+            
+            m_roundsCounter.RoundsChanged += OnRoundsChanged;
+        }
+
+        private void OnRoundsChanged(int rounds)
+        {
+            Debug.Log($"OnRoundsChanged: {rounds}");
         }
 
         private void OnDestroy()
@@ -36,18 +41,6 @@ namespace Scenes.Scripts
             m_activationButton.onClick.RemoveListener(OnActivationButtonClicked);
             m_onInputField.onEndEdit.RemoveListener(OnOnEdited);
             m_offInputField.onEndEdit.RemoveListener(OnOffEdited);
-            m_incRoundsButton.onClick.RemoveListener(OnIncRoundsClicked);
-            m_decRoundsButton.onClick.RemoveListener(OnDecRoundsClicked);
-        }
-        
-        private void OnDecRoundsClicked()
-        {
-         //
-        }
-
-        private void OnIncRoundsClicked()
-        {
-         //
         }
 
         private void OnOffEdited(string arg0)
