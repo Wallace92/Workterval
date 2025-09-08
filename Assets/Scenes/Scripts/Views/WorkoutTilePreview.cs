@@ -21,6 +21,7 @@ namespace Scenes.Scripts.Views
             m_icon.sprite = workout.Icon;
             m_title.text = workout.Title;
             m_description.text = workout.ToString();
+            gameObject.SetActive(false);
         }
 
         public void Toggle()

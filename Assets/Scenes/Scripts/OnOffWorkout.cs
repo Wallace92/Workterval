@@ -22,6 +22,8 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_totalTime;
         [SerializeField]
         private TextMeshProUGUI m_nextPhaseText;
+        [SerializeField]
+        private TextMeshProUGUI m_opfTimeText;
 
         private bool m_workoutActive;
         private int m_currentRound;
@@ -82,6 +84,7 @@ namespace Scenes.Scripts
         private void SetNextPhaseText()
         {
             m_nextPhaseText.text = m_phase == WorkoutPhase.On ? "Work" : "Rest";
+            m_opfTimeText.text = m_phase == WorkoutPhase.On ? "Rest" : "Work";
         }
         
         private void SwitchToOffPhase()
