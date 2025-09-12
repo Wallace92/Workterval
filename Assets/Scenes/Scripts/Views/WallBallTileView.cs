@@ -2,7 +2,6 @@ using Scenes.Scripts.Data;
 using Scenes.Scripts.Models;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 namespace Scenes.Scripts.Views
@@ -10,11 +9,9 @@ namespace Scenes.Scripts.Views
     public class WallBallTileView : ExerciseTileView
     {
         [SerializeField]
-        private Button m_maxButton;
-        [SerializeField]
-        private Button m_repsButton;
-        [SerializeField]
         private TMP_InputField m_repsInputField;
+        [SerializeField]
+        private GameObjectSelectable m_objectSelectable;
         
         private WallBallExercise m_exercise;
         
@@ -22,12 +19,10 @@ namespace Scenes.Scripts.Views
         {
             base.Awake();
             
-            m_repsButton.onClick.AddListener(OnRepsButtonClicked);
-            m_maxButton.onClick.AddListener(OnMaxButtonClicked);
+            m_objectSelectable.FirstButtonClicked += OnRepsButtonClicked;
+            m_objectSelectable.SecondButtonClicked += OnMaxButtonClicked;
             
             m_repsInputField.onEndEdit.AddListener(OnRepsEdited);
-            
-            m_repsButton.image.color = Color.green;
         }
         
         public override void Initialize(IExercise exercise)
@@ -41,8 +36,8 @@ namespace Scenes.Scripts.Views
         {
             base.OnDestroy();
             
-            m_repsButton.onClick.RemoveListener(OnRepsButtonClicked);
-            m_maxButton.onClick.RemoveListener(OnMaxButtonClicked);
+            m_objectSelectable.FirstButtonClicked -= OnRepsButtonClicked;
+            m_objectSelectable.SecondButtonClicked -= OnMaxButtonClicked;
             
             m_repsInputField.onEndEdit.RemoveListener(OnRepsEdited);
         }
@@ -59,18 +54,12 @@ namespace Scenes.Scripts.Views
         {
             m_exercise.Condition = ExerciseCondition.Max;
             
-            m_repsButton.image.color = Color.white;
-            m_maxButton.image.color = Color.green;
-            
             m_repsInputField.gameObject.SetActive(false);
         }
 
         private void OnRepsButtonClicked()
         {
             m_exercise.Condition = ExerciseCondition.Max;
-            
-            m_maxButton.image.color = Color.white;
-            m_repsButton.image.color = Color.green;
             
             m_repsInputField.gameObject.SetActive(true);
         }

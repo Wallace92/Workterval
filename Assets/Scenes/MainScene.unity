@@ -1852,7 +1852,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 28.300018, y: 329.75}
+  m_AnchoredPosition: {x: 28.300049, y: 329.75}
   m_SizeDelta: {x: -228.40002, y: -1009.50006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &537981677
@@ -3527,7 +3527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1c4922c99e48ada9633ff213b45058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.Factories.ExerciseTileViewFactory
-  m_wallBallTilePrefab: {fileID: 717616858407374505, guid: 3b6dff772049b644ea0c83d58be4a446, type: 3}
+  m_wallBallTilePrefab: {fileID: 7885867511508213297, guid: 3b6dff772049b644ea0c83d58be4a446, type: 3}
   m_rowTilePrefab: {fileID: 4480053581205239270, guid: 685fd6bb9e692ee4085d50ab90ce3ad6, type: 3}
   m_burpeePrefab: {fileID: 8984533919700530397, guid: 4935589ec7b1053438e71200b69270ca, type: 3}
   m_emptyExerciseTile: {fileID: 0}
