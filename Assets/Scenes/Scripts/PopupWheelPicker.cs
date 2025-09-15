@@ -9,9 +9,7 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
 {
     [Header("UI Parts")]
     public RectTransform wheelContainer;        // where rows are placed (a small column)
-    public RectTransform selectionBar;          // thin image line behind the center row
     public Button confirmButton;                // optional
-    public Button cancelButton;                 // optional
     public RectTransform rowPrefab;             // prefab containing a centered TextMeshProUGUI
 
     [Header("Behavior")]
@@ -75,31 +73,23 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     void BuildRows()
     {
-        if (!wheelContainer || !rowPrefab) { Debug.LogError("Assign wheelContainer & rowPrefab"); return; }
-
         // size the container to visible rows
         var s = wheelContainer.sizeDelta; s.y = visibleRows * rowHeight; wheelContainer.sizeDelta = s;
 
         // instantiate rows
-        for (int i = 0; i < visibleRows; i++)
+        for (var i = 0; i < visibleRows; i++)
         {
             var r = Instantiate(rowPrefab, wheelContainer);
             r.anchorMin = new Vector2(0, 1);
             r.anchorMax = new Vector2(1, 1);
             r.pivot = new Vector2(0.5f, 1);
-            var d = r.sizeDelta; d.y = rowHeight; d.x = 0; r.sizeDelta = d;
+            
+            var d = r.sizeDelta; 
+            d.y = rowHeight;
+            d.x = 0;
+            r.sizeDelta = d;
 
-            var cg = r.GetComponent<CanvasGroup>(); if (!cg) cg = r.gameObject.AddComponent<CanvasGroup>();
             _rows.Add(r);
-        }
-
-        // selection bar centered
-        if (selectionBar)
-        {
-            selectionBar.anchorMin = new Vector2(0, 0.5f);
-            selectionBar.anchorMax = new Vector2(1, 0.5f);
-            selectionBar.pivot = new Vector2(0.5f, 0.5f);
-            var sd = selectionBar.sizeDelta; sd.y = 2f; selectionBar.sizeDelta = sd;
         }
     }
 
@@ -127,9 +117,7 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
     {
         gameObject.SetActive(false);
     }
-
-    // --- Interaction ---
-
+    
     public void OnPointerDown(PointerEventData eventData)
     {
         _dragging = true;
