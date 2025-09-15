@@ -4,44 +4,46 @@ using UnityEngine.UI;
 
 public class WheelPickerOpener : MonoBehaviour
 {
-    public PopupWheelPicker picker;        // reference to the popup in your Canvas
-    public TextMeshProUGUI targetLabel;    // where to display the chosen number
-    public bool liveUpdate = true;
+    public PopupWheelPicker picker;     
+    public TextMeshProUGUI targetLabel;
 
-    void Reset() { targetLabel = GetComponentInChildren<TextMeshProUGUI>(); }
-
-    void Start()
+    [SerializeField]
+    private Button m_wheelButton;
+    
+    private void Start()
     {
-        // if this is a Button, open on click; else add a custom listener as needed
-        var btn = GetComponent<Button>();
-        if (btn) btn.onClick.AddListener(Open);
+        m_wheelButton.onClick.AddListener(Open);
     }
 
-    public void Open()
+    private void Open()
     {
-        int start = 0;
-        if (targetLabel && int.TryParse(targetLabel.text, out var v) && v >= 0) start = v;
+        var start = 0;
+        
+        if (int.TryParse(targetLabel.text, out var v) && v >= 0)
+        {
+            start = v;
+        }
 
         picker.OnValueChanged -= OnChanged;
-        picker.OnConfirm      -= OnConfirm;
-        picker.OnCancel       -= OnCancel;
+        picker.OnConfirm -= OnConfirm;
 
-        if (liveUpdate) picker.OnValueChanged += OnChanged;
+        picker.OnValueChanged += OnChanged;
         picker.OnConfirm += OnConfirm;
-        picker.OnCancel  += OnCancel;
 
         picker.Show(start);
+        
+        m_wheelButton.gameObject.SetActive(false);
     }
 
-    void OnChanged(int value)
+    private void OnChanged(int value)
     {
-        if (liveUpdate && targetLabel) targetLabel.text = value.ToString();
+        targetLabel.text = value.ToString();
     }
 
-    void OnConfirm(int value)
-    {
-        if (targetLabel) targetLabel.text = value.ToString();
+    private void OnConfirm(int value)
+    { 
+        targetLabel.text = value.ToString();
+        
+        m_wheelButton.gameObject.SetActive(true);
     }
-
-    void OnCancel() { /* no-op */ }
 }

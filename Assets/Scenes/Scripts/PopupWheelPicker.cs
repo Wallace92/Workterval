@@ -27,7 +27,6 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
     // callbacks
     public event Action<int> OnValueChanged;    // while moving/snapping
     public event Action<int> OnConfirm;         // when confirm pressed
-    public event Action OnCancel;
 
     // internals
     readonly List<RectTransform> _rows = new();
@@ -44,12 +43,6 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         if (confirmButton) confirmButton.onClick.AddListener(() =>
         {
             OnConfirm?.Invoke(_current); 
-            Hide();
-        });
-        
-        if (cancelButton) cancelButton.onClick.AddListener(() =>
-        {
-            OnCancel?.Invoke(); 
             Hide();
         });
 
