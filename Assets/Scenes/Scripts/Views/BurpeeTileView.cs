@@ -8,7 +8,7 @@ namespace Scenes.Scripts.Views
     public class BurpeeTileView : ExerciseTileView
     {
         [SerializeField]
-        private TMP_InputField m_repsInputField;
+        private WheelPickerOpener m_wheelPickerOpener;
         
         private BurpeeExercise m_exercise;
         
@@ -16,7 +16,7 @@ namespace Scenes.Scripts.Views
         {
             base.Awake();
 
-            m_repsInputField.onEndEdit.AddListener(OnRepsEdited);
+            m_wheelPickerOpener.ValueConfirmed += OnValueConfirmed;
         }
         
         public override void Initialize(IExercise exercise)
@@ -31,15 +31,13 @@ namespace Scenes.Scripts.Views
         {
             base.OnDestroy();
             
-            m_repsInputField.onEndEdit.RemoveListener(OnRepsEdited);
+            m_wheelPickerOpener.ValueConfirmed -= OnValueConfirmed;
         }
-        
-        private void OnRepsEdited(string _)
+
+        private void OnValueConfirmed(int value)
         {
-            if (int.TryParse(m_repsInputField.text, out var reps))
-            {
-                m_exercise.Repetitions = Mathf.Max(1, reps);
-            }
+            m_exercise.Repetitions = Mathf.Max(1, value);
         }
+
     }
 }

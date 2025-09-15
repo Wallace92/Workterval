@@ -8,7 +8,7 @@ namespace Scenes.Scripts.Views
     public class RowTileView : ExerciseTileView
     {
         [SerializeField]
-        private TMP_InputField m_kcalInputField;
+        private WheelPickerOpener m_wheelPickerOpener;
         
         private RowExercise m_exercise;
         
@@ -16,7 +16,7 @@ namespace Scenes.Scripts.Views
         {
             base.Awake();
 
-            m_kcalInputField.onEndEdit.AddListener(OnKcalEdited);
+            m_wheelPickerOpener.ValueConfirmed += OnValueConfirmed;
         }
         
         public override void Initialize(IExercise exercise)
@@ -31,15 +31,12 @@ namespace Scenes.Scripts.Views
         {
             base.OnDestroy();
             
-            m_kcalInputField.onEndEdit.RemoveListener(OnKcalEdited);
+            m_wheelPickerOpener.ValueConfirmed -= OnValueConfirmed;
         }
         
-        private void OnKcalEdited(string _)
+        private void OnValueConfirmed(int value)
         {
-            if (int.TryParse(m_kcalInputField.text, out var reps))
-            {
-                m_exercise.Kcal = Mathf.Max(1, reps);
-            }
+            m_exercise.Kcal = Mathf.Max(1, value);
         }
     }
 }

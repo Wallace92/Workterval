@@ -12,7 +12,9 @@ public class WheelPickerOpener : MonoBehaviour
 
     [SerializeField]
     private Button m_wheelButton;
-    
+
+    public string Value => targetLabel.text;
+
     private void Start()
     {
         m_wheelButton.onClick.AddListener(Open);

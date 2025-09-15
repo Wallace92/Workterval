@@ -37,6 +37,8 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
     void Awake()
     {
         visibleRows = Mathf.Max(3, visibleRows | 1); // ensure odd
+        
+        confirmButton.gameObject.SetActive(false);
         BuildRows();
         
         if (confirmButton) confirmButton.onClick.AddListener(() =>
@@ -110,12 +112,15 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         _dragging = false;
         gameObject.SetActive(true);
         
+        confirmButton.gameObject.SetActive(true);
+        
         UpdateRows();
     }
 
     public void Hide()
     {
         gameObject.SetActive(false);
+        confirmButton.gameObject.SetActive(false);
     }
     
     public void OnPointerDown(PointerEventData eventData)
