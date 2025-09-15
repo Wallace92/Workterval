@@ -74,20 +74,18 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
     void BuildRows()
     {
         // size the container to visible rows
-        var s = wheelContainer.sizeDelta; s.y = visibleRows * rowHeight; wheelContainer.sizeDelta = s;
+        var s = wheelContainer.sizeDelta; 
+        s.y = visibleRows * rowHeight; 
+        wheelContainer.sizeDelta = s;
 
         // instantiate rows
         for (var i = 0; i < visibleRows; i++)
         {
             var r = Instantiate(rowPrefab, wheelContainer);
-            r.anchorMin = new Vector2(0, 1);
-            r.anchorMax = new Vector2(1, 1);
-            r.pivot = new Vector2(0.5f, 1);
-            
-            var d = r.sizeDelta; 
-            d.y = rowHeight;
-            d.x = 0;
-            r.sizeDelta = d;
+            r.anchorMin = new Vector2(0f, 0.5f);
+            r.anchorMax = new Vector2(1f, 0.5f);
+            r.pivot     = new Vector2(0.5f, 0.5f);
+            r.sizeDelta = new Vector2(0f, rowHeight);
 
             _rows.Add(r);
         }
@@ -210,11 +208,9 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
             float vf = _current - _offset + delta;
             int valueForRow = Mathf.RoundToInt(vf);
 
-            // position this row (top-anchored/pivot Y=1)
-            float topFromCenter = (delta - _offset) * rowHeight;
-            float yTop = (wheelContainer.rect.height * 0.5f) - rowHeight * 0.5f - topFromCenter;
             var rt = _rows[i];
-            rt.anchoredPosition = new Vector2(0f, yTop);
+            float y = -(delta - _offset) * rowHeight;
+            rt.anchoredPosition = new Vector2(0f, y);
 
             var text = rt.GetComponentInChildren<TextMeshProUGUI>(true);
             var cg   = rt.GetComponent<CanvasGroup>() ?? rt.gameObject.AddComponent<CanvasGroup>();
