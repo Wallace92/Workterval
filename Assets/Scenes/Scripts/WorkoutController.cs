@@ -27,6 +27,8 @@ namespace Scenes.Scripts
         private OnOffWorkout m_onOffWorkout;
         [SerializeField]
         private Button m_exerciseButton;
+        [SerializeField]
+        private Button m_clickableAreaButton;
         
         private List<IExercise> m_exercises = new();
 
@@ -79,6 +81,11 @@ namespace Scenes.Scripts
             {
                 workoutPreview.Toggle();
             }
+        }
+
+        public void ToggleClickableArea(bool isActive)
+        {
+            m_clickableAreaButton.gameObject.SetActive(isActive);
         }
     }
 }

@@ -1,9 +1,12 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WheelPickerOpener : MonoBehaviour
 {
+    public event Action<int> ValueConfirmed = delegate { };
+    
     public PopupWheelPicker picker;     
     public TextMeshProUGUI targetLabel;
 
@@ -43,7 +46,8 @@ public class WheelPickerOpener : MonoBehaviour
     private void OnConfirm(int value)
     { 
         targetLabel.text = value.ToString();
-        
         m_wheelButton.gameObject.SetActive(true);
+        
+        ValueConfirmed.Invoke(value);
     }
 }

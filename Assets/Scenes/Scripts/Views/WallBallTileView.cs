@@ -11,6 +11,8 @@ namespace Scenes.Scripts.Views
         [SerializeField]
         private TMP_InputField m_repsInputField;
         [SerializeField]
+        private WheelPickerOpener m_wheelPickerOpener;
+        [SerializeField]
         private GameObjectSelectable m_objectSelectable;
         
         private WallBallExercise m_exercise;
@@ -22,7 +24,7 @@ namespace Scenes.Scripts.Views
             m_objectSelectable.FirstButtonClicked += OnRepsButtonClicked;
             m_objectSelectable.SecondButtonClicked += OnMaxButtonClicked;
             
-            m_repsInputField.onEndEdit.AddListener(OnRepsEdited);
+            m_wheelPickerOpener.ValueConfirmed += OnValueConfirmed;
         }
         
         public override void Initialize(IExercise exercise)
@@ -39,15 +41,12 @@ namespace Scenes.Scripts.Views
             m_objectSelectable.FirstButtonClicked -= OnRepsButtonClicked;
             m_objectSelectable.SecondButtonClicked -= OnMaxButtonClicked;
             
-            m_repsInputField.onEndEdit.RemoveListener(OnRepsEdited);
+            m_wheelPickerOpener.ValueConfirmed -= OnValueConfirmed;
         }
 
-        private void OnRepsEdited(string _)
+        private void OnValueConfirmed(int value)
         {
-            if (int.TryParse(m_repsInputField.text, out var reps))
-            {
-                m_exercise.Repetitions = Mathf.Max(1, reps);
-            }
+            m_exercise.Repetitions = Mathf.Max(1, value);
         }
 
         private void OnMaxButtonClicked()

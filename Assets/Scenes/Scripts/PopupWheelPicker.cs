@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scenes.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -108,6 +109,7 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         _offset = 0f;
         _dragging = false;
         gameObject.SetActive(true);
+        
         UpdateRows();
     }
 
