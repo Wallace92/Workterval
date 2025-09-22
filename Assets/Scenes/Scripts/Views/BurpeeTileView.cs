@@ -7,34 +7,16 @@ namespace Scenes.Scripts.Views
 {
     public class BurpeeTileView : ExerciseTileView
     {
-        [SerializeField]
-        private WheelPickerOpener m_wheelPickerOpener;
-        
         private BurpeeExercise m_exercise;
         
-        protected override void Awake()
+        public override void Initialize(IExercise exercise, Canvas canvas)
         {
-            base.Awake();
-
-            m_wheelPickerOpener.ValueConfirmed += OnValueConfirmed;
-        }
-        
-        public override void Initialize(IExercise exercise)
-        {
-            base.Initialize(exercise);
+            base.Initialize(exercise, canvas);
             
             m_exercise = exercise as BurpeeExercise;
         }
 
-        
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            
-            m_wheelPickerOpener.ValueConfirmed -= OnValueConfirmed;
-        }
-
-        private void OnValueConfirmed(int value)
+        protected override void OnValueConfirmed(int value)
         {
             m_exercise.Repetitions = Mathf.Max(1, value);
         }

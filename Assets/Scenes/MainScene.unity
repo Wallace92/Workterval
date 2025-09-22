@@ -3212,6 +3212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71275ce9f3e34dbbb53cf58335144c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.WorkoutControllerView
+  m_canvas: {fileID: 1969917249}
   m_thumbnailContainer: {fileID: 179903325}
   m_thumbnailTilePrefab: {fileID: 365263186805479025, guid: 7d48122a20a5a25498f3fc58405472c6, type: 3}
   m_thumbnailTilesParent: {fileID: 110882381}

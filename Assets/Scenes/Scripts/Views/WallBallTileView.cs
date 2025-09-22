@@ -9,9 +9,7 @@ namespace Scenes.Scripts.Views
     public class WallBallTileView : ExerciseTileView
     {
         [SerializeField]
-        private TMP_InputField m_repsInputField;
-        [SerializeField]
-        private WheelPickerOpener m_wheelPickerOpener;
+        private GameObject m_repsInputField;
         [SerializeField]
         private GameObjectSelectable m_objectSelectable;
         
@@ -23,13 +21,11 @@ namespace Scenes.Scripts.Views
             
             m_objectSelectable.FirstButtonClicked += OnRepsButtonClicked;
             m_objectSelectable.SecondButtonClicked += OnMaxButtonClicked;
-            
-            m_wheelPickerOpener.ValueConfirmed += OnValueConfirmed;
         }
         
-        public override void Initialize(IExercise exercise)
+        public override void Initialize(IExercise exercise, Canvas canvas)
         {
-            base.Initialize(exercise);
+            base.Initialize(exercise, canvas);
             
             m_exercise = exercise as WallBallExercise;
         }
@@ -40,11 +36,9 @@ namespace Scenes.Scripts.Views
             
             m_objectSelectable.FirstButtonClicked -= OnRepsButtonClicked;
             m_objectSelectable.SecondButtonClicked -= OnMaxButtonClicked;
-            
-            m_wheelPickerOpener.ValueConfirmed -= OnValueConfirmed;
         }
 
-        private void OnValueConfirmed(int value)
+        protected override void OnValueConfirmed(int value)
         {
             m_exercise.Repetitions = Mathf.Max(1, value);
         }

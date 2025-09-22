@@ -39,15 +39,13 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         visibleRows = Mathf.Max(3, visibleRows | 1); // ensure odd
         
         confirmButton.gameObject.SetActive(false);
-        BuildRows();
         
-        if (confirmButton) confirmButton.onClick.AddListener(() =>
+        confirmButton.onClick.AddListener(() =>
         {
             OnConfirm?.Invoke(_current); 
             Hide();
         });
-
-        // start hidden
+            
         gameObject.SetActive(false);
     }
 
@@ -76,7 +74,12 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     void BuildRows()
     {
-        // size the container to visible rows
+        foreach (var rows in _rows)
+        {
+            Destroy(rows.gameObject);
+        }
+        _rows.Clear();
+        
         var s = wheelContainer.sizeDelta; 
         s.y = visibleRows * rowHeight; 
         wheelContainer.sizeDelta = s;
@@ -105,12 +108,16 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         if (_current != prev) OnValueChanged?.Invoke(_current);
     }
 
-    public void Show(int start, int? max = null)
+    public void Show(int start, Transform parent)
     {
+        BuildRows();
+        
         _current = Mathf.Max(0, start);
         _offset = 0f;
         _dragging = false;
         gameObject.SetActive(true);
+        
+        transform.SetParent(parent);
         
         confirmButton.gameObject.SetActive(true);
         

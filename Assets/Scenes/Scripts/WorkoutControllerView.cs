@@ -17,6 +17,9 @@ namespace Scenes.Scripts
         private readonly List<IExercise> m_selectedExercises = new();
         private readonly TabNavigator m_tabNavigator = new();
         
+        [SerializeField]
+        private Canvas m_canvas;
+        
         [Header("Thumbnail View")]
         [SerializeField] 
         private Transform m_thumbnailContainer;     
@@ -34,7 +37,6 @@ namespace Scenes.Scripts
         [Header("Controls")]
         [SerializeField] 
         private Button m_workoutButton;
-        [Header("Controls")]
         [SerializeField] 
         private Button m_backButton;
         [SerializeField] 
@@ -126,7 +128,7 @@ namespace Scenes.Scripts
 
         private void InstantiateExerciseTile(IExercise exercise)
         {
-            var tile = m_exerciseTileViewFactory.Create(exercise, m_exerciseContainer);
+            var tile = m_exerciseTileViewFactory.Create(exercise, m_canvas, m_exerciseContainer);
             
             m_exerciseTileViews.Add(tile);
         }
@@ -140,6 +142,7 @@ namespace Scenes.Scripts
             }
             
             m_exerciseTileViews.Remove(tile);
+            
             Destroy(tile.GameObject);
         }
     }

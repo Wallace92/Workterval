@@ -7,6 +7,6 @@ namespace Scenes.Scripts.Views
     {
         IExercise Exercise { get; }
         GameObject GameObject { get;}
-        void Initialize(IExercise exercise);
+        void Initialize(IExercise exercise, Canvas canvas);
     }
 }

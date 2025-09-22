@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class WheelPickerOpener : MonoBehaviour
 {
     public event Action<int> ValueConfirmed = delegate { };
+    public event Action WheelOpened = delegate { };
     
     public PopupWheelPicker picker;     
     public TextMeshProUGUI targetLabel;
@@ -17,10 +18,15 @@ public class WheelPickerOpener : MonoBehaviour
 
     private void Start()
     {
-        m_wheelButton.onClick.AddListener(Open);
+        m_wheelButton.onClick.AddListener(WheelOpened.Invoke);
+    }
+    
+    private void OnDestroy()
+    {
+        m_wheelButton.onClick.RemoveListener(WheelOpened.Invoke);
     }
 
-    private void Open()
+    public void Open(Canvas parent)
     {
         var start = 0;
         
@@ -35,7 +41,7 @@ public class WheelPickerOpener : MonoBehaviour
         picker.OnValueChanged += OnChanged;
         picker.OnConfirm += OnConfirm;
 
-        picker.Show(start);
+        picker.Show(start, parent.transform);
         
         m_wheelButton.gameObject.SetActive(false);
     }

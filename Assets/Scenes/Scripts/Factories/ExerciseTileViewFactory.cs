@@ -16,7 +16,7 @@ namespace Scenes.Scripts.Factories
         [SerializeField]
         private EmptyExerciseTile m_emptyExerciseTile;
         
-        public IExerciseTile Create(IExercise exercise, Transform container)
+        public IExerciseTile Create(IExercise exercise, Canvas canvas, Transform container)
         {
             IExerciseTile tile = exercise switch
             {
@@ -26,7 +26,7 @@ namespace Scenes.Scripts.Factories
                 _ => Instantiate(m_emptyExerciseTile, container)
             };
 
-            tile.Initialize(exercise);
+            tile.Initialize(exercise, canvas);
             
             return tile;
         }
