@@ -15,6 +15,7 @@ namespace Scenes.Scripts
         private readonly List<ThumbnailTileView> m_thumbnailTileViews = new();
         private readonly List<IExerciseTile> m_exerciseTileViews = new();
         private readonly List<IExercise> m_selectedExercises = new();
+        private readonly TabNavigator m_tabNavigator = new();
         
         [Header("Thumbnail View")]
         [SerializeField] 
@@ -33,6 +34,9 @@ namespace Scenes.Scripts
         [Header("Controls")]
         [SerializeField] 
         private Button m_workoutButton;
+        [Header("Controls")]
+        [SerializeField] 
+        private Button m_backButton;
         [SerializeField] 
         private Button m_startButton;
         [SerializeField]
@@ -44,6 +48,9 @@ namespace Scenes.Scripts
         {
             m_startButton.onClick.AddListener(OnStartButton);
             m_workoutButton.onClick.AddListener(OnWorkoutButton);
+            m_backButton.onClick.AddListener(OnBackButton);
+            
+            m_tabNavigator.Init(m_thumbnailTilesParent);
         }
 
         private void OnDestroy()
@@ -54,8 +61,10 @@ namespace Scenes.Scripts
             }
             
             m_startButton.onClick.RemoveListener(OnStartButton);
+            m_workoutButton.onClick.RemoveListener(OnWorkoutButton);
+            m_backButton.onClick.RemoveListener(OnBackButton);
         }
-        
+
         public void ShowThumbnails(List<IExercise> exercises)
         {
             foreach (var exercise in exercises)
@@ -69,18 +78,27 @@ namespace Scenes.Scripts
                 m_thumbnailTileViews.Add(tile);
             }
         }
-        
+
+        public void SetCurrentTab(GameObject currentTab)
+        {
+            m_tabNavigator.Push(currentTab);
+        }
+
+        private void OnBackButton()
+        {
+            m_tabNavigator.Back();
+        }
+
         private void OnStartButton()
         {
-            m_exerciseTilesParent.gameObject.SetActive(false);
-            
             WorkoutStarted?.Invoke(m_selectedExercises.ToArray(), m_workoutDetails);
         }
         
         private void OnWorkoutButton()
         {
-            m_thumbnailTilesParent.gameObject.SetActive(false);
-            m_exerciseTilesParent.gameObject.SetActive(true);
+            m_backButton.gameObject.SetActive(true);
+            
+            m_tabNavigator.Push(m_exerciseTilesParent);
         }
         
         private void HandleThumbnailClicked(ThumbnailTileView tile)
