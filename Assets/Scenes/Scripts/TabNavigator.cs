@@ -9,8 +9,6 @@ namespace Scenes.Scripts
     {
         private readonly Stack<GameObject> m_history = new();
 
-        public GameObject Current => m_history.Count > 0 ? m_history.Peek() : null;
-
         public void Init(GameObject first)
         {
             m_history.Push(first);
@@ -18,14 +16,18 @@ namespace Scenes.Scripts
 
         public void Push(GameObject tab)
         {
-            if (tab == Current)
+            var current = m_history.Count > 0 
+                ? m_history.Peek()
+                : null;
+            
+            if (tab == current)
             {
                 return;
             }
 
-            if (Current)
+            if (current)
             {
-                Current.SetActive(false);
+                current.SetActive(false);
             }
             
             m_history.Push(tab);
