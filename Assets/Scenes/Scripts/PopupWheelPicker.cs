@@ -18,17 +18,19 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
     public float rowHeight = 60f;               // px
     public float dragSensitivity = 1.0f;        // 1.0 = 1px moves 1px
     public float snapSpeed = 12f;               // higher = snappier// null = unbounded upward
+    
+    private const float centerScale = 1.25f;
+    private const float sideAlpha = 0.5f;
 
-    [Header("Style")]
-    public float centerScale = 1.15f;
-    public float sideAlpha = 0.35f;
+    [SerializeField]
+    private WheelTick m_wheelTickPrefab;
 
     // callbacks
     public event Action<int> OnValueChanged;    // while moving/snapping
     public event Action<int> OnConfirm;         // when confirm pressed
 
     // internals
-    readonly List<RectTransform> _rows = new();
+    readonly List<WheelTick> _rows = new();
     int _current;                   // selected integer (>=0)
     float _offset;                  // fractional offset in rows (+down/-up visually)
     bool _dragging;
@@ -72,7 +74,7 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         }
     }
 
-    void BuildRows()
+    private void BuildRows()
     {
         foreach (var rows in _rows)
         {
@@ -87,11 +89,13 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         // instantiate rows
         for (var i = 0; i < visibleRows; i++)
         {
-            var r = Instantiate(rowPrefab, wheelContainer);
-            r.anchorMin = new Vector2(0f, 0.5f);
-            r.anchorMax = new Vector2(1f, 0.5f);
-            r.pivot     = new Vector2(0.5f, 0.5f);
-            r.sizeDelta = new Vector2(0f, rowHeight);
+            var r = Instantiate(m_wheelTickPrefab, wheelContainer);
+            
+            r.SetRectTransform(rowHeight);
+            // r.anchorMin = new Vector2(0f, 0.5f);
+            // r.anchorMax = new Vector2(1f, 0.5f);
+            // r.pivot     = new Vector2(0.5f, 0.5f);
+            // r.sizeDelta = new Vector2(0f, rowHeight);
 
             _rows.Add(r);
         }
@@ -139,7 +143,6 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             wheelContainer, eventData.position, eventData.pressEventCamera, out var local);
 
-        float half = wheelContainer.rect.height * 0.5f;
         float centerBand = rowHeight * 0.6f; // safe zone
         if (Mathf.Abs(local.y) > centerBand && !_dragMoved)
         {
@@ -224,25 +227,20 @@ public class PopupWheelPicker : MonoBehaviour, IPointerDownHandler, IDragHandler
 
             var rt = _rows[i];
             float y = -(delta - _offset) * rowHeight;
-            rt.anchoredPosition = new Vector2(0f, y);
-
-            var text = rt.GetComponentInChildren<TextMeshProUGUI>(true);
-            var cg   = rt.GetComponent<CanvasGroup>() ?? rt.gameObject.AddComponent<CanvasGroup>();
-
-            // hide negatives instead of clamping them to 0 (prevents “too many zeros”)
+           
+            rt.SetAnchorPosX(0f, y);
+            
             if (valueForRow < 0)
             {
-                if (text) text.text = "";
-                cg.alpha = 0f;
+                rt.SetTick("", 0);
             }
             else
             {
-                if (text) text.text = valueForRow.ToString();   // <-- use the computed value
-                // scale/fade toward center
-                float dist = Mathf.Abs(delta - _offset);
-                float k = Mathf.Clamp01(1f - Mathf.Min(dist, 1f));
-                rt.localScale = Vector3.Lerp(Vector3.one, new Vector3(centerScale, centerScale, 1f), k);
-                cg.alpha = Mathf.Lerp(sideAlpha, 1f, k);
+                var dist = Mathf.Abs(delta - _offset);
+                var k = Mathf.Clamp01(1f - Mathf.Min(dist, 1f));
+                
+                rt.SetLocalScale(Vector3.one, new Vector3(centerScale, centerScale, 1f), k);
+                rt.SetTick(valueForRow.ToString(),  Mathf.Lerp(sideAlpha, 1f, k));
             }
         }
     }

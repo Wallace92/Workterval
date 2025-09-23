@@ -56,8 +56,7 @@ MonoBehaviour:
   rowHeight: 60
   dragSensitivity: 1
   snapSpeed: 12
-  centerScale: 1.15
-  sideAlpha: 0.35
+  m_wheelTickPrefab: {fileID: 8524250620443704522, guid: d0e3b76fcaf952c4d824d78be5f8546d, type: 3}
 --- !u!1 &1621116069689458950
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +259,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -287,7 +286,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 71.6
+  m_fontSize: 67.4
   m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 1
