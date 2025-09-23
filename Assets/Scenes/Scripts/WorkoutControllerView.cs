@@ -44,7 +44,7 @@ namespace Scenes.Scripts
         [SerializeField]
         private ExerciseTileViewFactory m_exerciseTileViewFactory;
         [SerializeField]
-        private WorkoutDetails m_workoutDetails;
+        private OnOffWorkoutDetails m_workoutDetails;
 
         private void Awake()
         {
