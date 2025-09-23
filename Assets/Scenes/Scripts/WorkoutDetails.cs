@@ -19,9 +19,11 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_workoutTime;
         [SerializeField]
         private RoundsCounter m_roundsCounter;
-        
-        public int OnSeconds => int.TryParse(m_onWheelPickerOpener.Value, out var onVal) ? onVal : 0;
-        public int OffSeconds => int.TryParse(m_offWheelPickerOpener.Value, out var offVal) ? offVal : 0;
+        [SerializeField]
+        private Canvas m_canvas;
+
+        public int OnSeconds => m_onWheelPickerOpener.Value;
+        public int OffSeconds => m_offWheelPickerOpener.Value;
         public int Rounds => m_roundsCounter.Rounds;
         public int TotalSeconds => (OnSeconds + OffSeconds) * Rounds;
         
@@ -32,8 +34,12 @@ namespace Scenes.Scripts
             m_onWheelPickerOpener.ValueConfirmed += OnOnValueConfirmed;
             m_offWheelPickerOpener.ValueConfirmed += OnOffValueConfirmed;
             
+            m_onWheelPickerOpener.WheelOpened += OnOnWheelOpened;
+            m_offWheelPickerOpener.WheelOpened += OnOffWheelOpened;
             
             m_roundsCounter.RoundsChanged += OnRoundsChanged;
+
+            SetTotalTime();
         }
 
         private void OnDestroy()
@@ -42,8 +48,21 @@ namespace Scenes.Scripts
             
             m_onWheelPickerOpener.ValueConfirmed -= OnOnValueConfirmed;
             m_offWheelPickerOpener.ValueConfirmed -= OnOffValueConfirmed;
+            
+            m_onWheelPickerOpener.WheelOpened -= OnOnWheelOpened;
+            m_offWheelPickerOpener.WheelOpened -= OnOffWheelOpened;
        
             m_roundsCounter.RoundsChanged -= OnRoundsChanged;
+        }
+
+        private void OnOffWheelOpened()
+        {
+            m_offWheelPickerOpener.Open(m_canvas);
+        }
+
+        private void OnOnWheelOpened()
+        {
+            m_onWheelPickerOpener.Open(m_canvas);
         }
 
         private void OnRoundsChanged()
@@ -64,8 +83,8 @@ namespace Scenes.Scripts
         private void SetTotalTime()
         {
             var roundsCounter = m_roundsCounter.Rounds;
-            var onSeconds = int.TryParse(m_onWheelPickerOpener.Value, out var onVal) ? onVal : 0;
-            var offSeconds = int.TryParse(m_offWheelPickerOpener.Value, out var offVal) ? offVal : 0;
+            var onSeconds = m_onWheelPickerOpener.Value;
+            var offSeconds = m_offWheelPickerOpener.Value;
             var totalSeconds = (onSeconds + offSeconds) * roundsCounter;
 
             var minutes = totalSeconds / 60;

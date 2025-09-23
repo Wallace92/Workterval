@@ -14,11 +14,13 @@ public class WheelPickerOpener : MonoBehaviour
     [SerializeField]
     private Button m_wheelButton;
 
-    public string Value => targetLabel.text;
+    public int Value => int.TryParse(targetLabel.text, out var onVal) ? onVal : 0;
 
     private void Start()
     {
         m_wheelButton.onClick.AddListener(WheelOpened.Invoke);
+        
+        ValueConfirmed.Invoke(Value);
     }
     
     private void OnDestroy()

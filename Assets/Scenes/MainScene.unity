@@ -825,6 +825,7 @@ MonoBehaviour:
   m_workoutContainer: {fileID: 1033416711}
   m_workoutTime: {fileID: 1657311117}
   m_roundsCounter: {fileID: 656820642}
+  m_canvas: {fileID: 1969917249}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,5 @@ namespace Scenes.Scripts.Views
         {
             m_exercise.Repetitions = Mathf.Max(1, value);
         }
-
     }
 }
