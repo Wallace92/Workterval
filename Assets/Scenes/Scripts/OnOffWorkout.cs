@@ -1,11 +1,9 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Scenes.Scripts
 {
-    public class OnOffWorkout : MonoBehaviour, IOnOffWorkout
+    public class OnOffWorkout : MonoBehaviour
     {
         private enum WorkoutPhase
         {
@@ -63,12 +61,15 @@ namespace Scenes.Scripts
             }
         }
 
-        public void StartWorkout(IOnOffWorkout workout)
+        public void StartWorkout(IWorkout workout)
         {
-            OnSeconds = workout.OnSeconds;
-            OffSeconds = workout.OffSeconds;
-            Rounds = workout.Rounds;
-            TotalSeconds = workout.TotalSeconds;
+            if (workout is IOnOffWorkout onOffWorkout)
+            {
+                OnSeconds = onOffWorkout.OnSeconds;
+                OffSeconds = onOffWorkout.OffSeconds;
+                Rounds = onOffWorkout.Rounds;
+                TotalSeconds = onOffWorkout.TotalSeconds;
+            }
             
             m_currentRound = 1;
             m_phase = WorkoutPhase.On;
@@ -76,9 +77,9 @@ namespace Scenes.Scripts
             m_totalElapsed = 0f;
             
             m_workoutActive = true;
-            m_onTime.text = FormatMmss(workout.OnSeconds);
-            m_offTime.text = FormatMmss(workout.OffSeconds);
-            m_totalTime.text = FormatMmss(workout.TotalSeconds);
+            m_onTime.text = FormatMmss(OnSeconds);
+            m_offTime.text = FormatMmss(OffSeconds);
+            m_totalTime.text = FormatMmss(TotalSeconds);
             m_rounds.text = $"{m_currentRound}/{Rounds}";
             m_workoutTime.text = "00:00";
             

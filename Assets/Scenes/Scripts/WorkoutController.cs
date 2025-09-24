@@ -56,8 +56,6 @@ namespace Scenes.Scripts
 
         private void OnWorkoutStarted(IExercise[] exercises, IWorkout workout)
         {
-            var onOffWorkout = workout as IOnOffWorkout;
-
             foreach (var exercise in exercises.Reverse())
             {
                 var workoutPreview = Instantiate(m_workoutTilePreviewPrefab, m_workoutTileContainer);
@@ -72,7 +70,7 @@ namespace Scenes.Scripts
             m_workoutControllerView.SetCurrentTab(m_onOffWorkout.gameObject);
             
             m_onOffWorkout.gameObject.SetActive(true);
-            m_onOffWorkout.StartWorkout(onOffWorkout);
+            m_onOffWorkout.StartWorkout(workout);
         }
 
         private void OnExerciseButtonClicked()
