@@ -76,6 +76,8 @@ namespace Scenes.Scripts
                 OffSeconds = 0;
                 Rounds = emomWorkout.Rounds;
                 TotalSeconds = emomWorkout.RoundSeconds * emomWorkout.Rounds;
+                
+                m_opfTimeText.transform.parent.gameObject.SetActive(false);
             }
             
             m_currentRound = 1;
