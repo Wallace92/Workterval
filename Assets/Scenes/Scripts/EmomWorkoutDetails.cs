@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scenes.Scripts
 {
@@ -8,19 +9,24 @@ namespace Scenes.Scripts
         [SerializeField]
         private RoundsCounter m_roundsCounter;
         [SerializeField]
-        private WheelPickerOpener m_roundTimeWheel;
+        private WheelPickerOpener m_roundTimeMinWheel;
+        [SerializeField]
+        private WheelPickerOpener m_roundTimeSecondsWheel;
         [SerializeField] 
         private TextMeshProUGUI m_workoutTime;
         
         public int Rounds => m_roundsCounter.Rounds;
-        public int RoundSeconds => m_roundTimeWheel.Value;
+        public int RoundSeconds => m_roundTimeMinWheel.Value;
         
         protected override void Awake()
         {
             base.Awake();
             
-            m_roundTimeWheel.ValueConfirmed += OnOnValueConfirmed;
-            m_roundTimeWheel.WheelOpened += OnOnWheelOpened;
+            m_roundTimeMinWheel.ValueConfirmed += OnOnValueConfirmed;
+            m_roundTimeMinWheel.WheelOpened += OnOnMinWheelOpened;
+            
+            m_roundTimeSecondsWheel.ValueConfirmed += OnOnValueConfirmed;
+            m_roundTimeSecondsWheel.WheelOpened += OnOnSecondsWheelOpened;
             m_roundsCounter.RoundsChanged += OnRoundsChanged;
         }
         
@@ -28,14 +34,23 @@ namespace Scenes.Scripts
         {
             base.OnDestroy();
             
-            m_roundTimeWheel.ValueConfirmed -= OnOnValueConfirmed;
-            m_roundTimeWheel.WheelOpened -= OnOnWheelOpened;
+            m_roundTimeMinWheel.ValueConfirmed -= OnOnValueConfirmed;
+            m_roundTimeMinWheel.WheelOpened -= OnOnMinWheelOpened;
+            
+            m_roundTimeSecondsWheel.ValueConfirmed -= OnOnValueConfirmed;
+            m_roundTimeSecondsWheel.WheelOpened -= OnOnSecondsWheelOpened;
+            
             m_roundsCounter.RoundsChanged -= OnRoundsChanged;
         }
         
-        private void OnOnWheelOpened()
+        private void OnOnMinWheelOpened()
         {
-            m_roundTimeWheel.Open(Canvas);
+            m_roundTimeMinWheel.Open(Canvas);
+        }
+        
+        private void OnOnSecondsWheelOpened()
+        {
+            m_roundTimeSecondsWheel.Open(Canvas);
         }
         
         private void OnRoundsChanged()
@@ -51,8 +66,9 @@ namespace Scenes.Scripts
         private void SetTotalTime()
         {
             var roundsCounter = m_roundsCounter.Rounds;
-            var roundTime = m_roundTimeWheel.Value;
-            var totalSeconds = roundTime * roundsCounter;
+            var roundMinTime = m_roundTimeMinWheel.Value;
+            var roundSecondsTime = m_roundTimeSecondsWheel.Value;
+            var totalSeconds = (roundMinTime * 60 + roundSecondsTime) * roundsCounter;
 
             var minutes = totalSeconds / 60;
             var seconds = totalSeconds % 60;
