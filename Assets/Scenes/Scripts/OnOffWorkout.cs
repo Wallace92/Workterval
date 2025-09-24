@@ -70,6 +70,13 @@ namespace Scenes.Scripts
                 Rounds = onOffWorkout.Rounds;
                 TotalSeconds = onOffWorkout.TotalSeconds;
             }
+            else if (workout is IEmomWorkout emomWorkout)
+            {
+                OnSeconds = emomWorkout.RoundSeconds;
+                OffSeconds = 0;
+                Rounds = emomWorkout.Rounds;
+                TotalSeconds = emomWorkout.RoundSeconds * emomWorkout.Rounds;
+            }
             
             m_currentRound = 1;
             m_phase = WorkoutPhase.On;

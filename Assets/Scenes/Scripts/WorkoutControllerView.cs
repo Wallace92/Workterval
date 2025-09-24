@@ -10,7 +10,7 @@ namespace Scenes.Scripts
 {
     public class WorkoutControllerView : MonoBehaviour
     {
-        public event Action<IExercise[], IOnOffWorkout> WorkoutStarted = delegate { };
+        public event Action<IExercise[], IWorkout> WorkoutStarted = delegate { };
         
         private readonly List<ThumbnailTileView> m_thumbnailTileViews = new();
         private readonly List<IExerciseTile> m_exerciseTileViews = new();
@@ -44,7 +44,9 @@ namespace Scenes.Scripts
         [SerializeField]
         private ExerciseTileViewFactory m_exerciseTileViewFactory;
         [SerializeField]
-        private OnOffWorkoutDetails m_workoutDetails;
+        private WorkoutDetails[] m_workoutDetails;
+        
+        private WorkoutDetails m_selectedWorkout;
 
         private void Awake()
         {
@@ -53,6 +55,11 @@ namespace Scenes.Scripts
             m_backButton.onClick.AddListener(OnBackButton);
             
             m_tabNavigator.Init(m_thumbnailTilesParent);
+            
+            foreach (var workout in m_workoutDetails)
+            {
+                workout.OnWorkoutSelected += OnWorkoutSelected;
+            }
         }
 
         private void OnDestroy()
@@ -62,9 +69,25 @@ namespace Scenes.Scripts
                 tile.ThumbnailClicked -= HandleThumbnailClicked;
             }
             
+            foreach (var workout in m_workoutDetails)
+            {
+                workout.OnWorkoutSelected -= OnWorkoutSelected;
+            }
+            
             m_startButton.onClick.RemoveListener(OnStartButton);
             m_workoutButton.onClick.RemoveListener(OnWorkoutButton);
             m_backButton.onClick.RemoveListener(OnBackButton);
+        }
+
+        private void OnWorkoutSelected(IWorkout workout)
+        {
+            foreach (var exercise in m_workoutDetails)
+            {
+                exercise.Hide();
+            }
+            
+            m_selectedWorkout = workout as WorkoutDetails;
+            m_selectedWorkout?.Show();
         }
 
         public void ShowThumbnails(List<IExercise> exercises)
@@ -93,7 +116,12 @@ namespace Scenes.Scripts
 
         private void OnStartButton()
         {
-            WorkoutStarted?.Invoke(m_selectedExercises.ToArray(), m_workoutDetails);
+            if (m_selectedWorkout == null)
+            {
+                return;
+            }
+            
+            WorkoutStarted?.Invoke(m_selectedExercises.ToArray(), m_selectedWorkout);
         }
         
         private void OnWorkoutButton()

@@ -1,10 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Scenes.Scripts
 {
-    public class WorkoutDetails : MonoBehaviour
+    public class WorkoutDetails : MonoBehaviour, IWorkout
     {
+        public event Action<IWorkout> OnWorkoutSelected = delegate { };
+        
         [SerializeField]
         private Button m_activationButton;
         [SerializeField]
@@ -24,9 +27,19 @@ namespace Scenes.Scripts
             m_activationButton.onClick.RemoveListener(OnActivationButtonClicked);
         }
         
-        private void OnActivationButtonClicked()
+        protected virtual void OnActivationButtonClicked()
         {
-            m_workoutContainer.gameObject.SetActive(!m_workoutContainer.gameObject.activeSelf);
+            OnWorkoutSelected.Invoke(this);
+        }
+
+        public void Show()
+        {
+            m_workoutContainer.gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            m_workoutContainer.gameObject.SetActive(false);
         }
     }
 }

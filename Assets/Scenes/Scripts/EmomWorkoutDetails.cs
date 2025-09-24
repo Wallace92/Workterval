@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Scenes.Scripts
 {
@@ -16,7 +15,7 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_workoutTime;
         
         public int Rounds => m_roundsCounter.Rounds;
-        public int RoundSeconds => m_roundTimeMinWheel.Value;
+        public int RoundSeconds => m_roundTimeMinWheel.Value * 60 + m_roundTimeSecondsWheel.Value;
         
         protected override void Awake()
         {
@@ -42,7 +41,7 @@ namespace Scenes.Scripts
             
             m_roundsCounter.RoundsChanged -= OnRoundsChanged;
         }
-        
+
         private void OnOnMinWheelOpened()
         {
             m_roundTimeMinWheel.Open(Canvas);

@@ -1555,6 +1555,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725435677}
   m_CullTransparentMesh: 1
+--- !u!114 &783959026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7487005246757141743, guid: 25132b74d160224488c5bbc8d347c460, type: 3}
+  m_PrefabInstance: {fileID: 383241957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a21f3a7b87e4d2bb620cad7a8f613d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.EmomWorkoutDetails
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2590,7 +2601,9 @@ MonoBehaviour:
   m_backButton: {fileID: 1934666218}
   m_startButton: {fileID: 1208742476}
   m_exerciseTileViewFactory: {fileID: 1290102365}
-  m_workoutDetails: {fileID: 6411387052735309962}
+  m_workoutDetails:
+  - {fileID: 783959026}
+  - {fileID: 6411387052735309962}
 --- !u!114 &1290102365
 MonoBehaviour:
   m_ObjectHideFlags: 0
