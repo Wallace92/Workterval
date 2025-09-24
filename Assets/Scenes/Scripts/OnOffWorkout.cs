@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scenes.Scripts
 {
@@ -18,6 +19,8 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_offTime;
         [SerializeField]
         private TextMeshProUGUI m_rounds;
+        [SerializeField]
+        private TextMeshProUGUI m_workoutTime;
         [SerializeField]
         private TextMeshProUGUI m_totalTime;
         [SerializeField]
@@ -75,8 +78,9 @@ namespace Scenes.Scripts
             m_workoutActive = true;
             m_onTime.text = FormatMmss(workout.OnSeconds);
             m_offTime.text = FormatMmss(workout.OffSeconds);
+            m_totalTime.text = FormatMmss(workout.TotalSeconds);
             m_rounds.text = $"{m_currentRound}/{Rounds}";
-            m_totalTime.text = "00:00";
+            m_workoutTime.text = "00:00";
             
             SetNextPhaseText();
         }
@@ -132,7 +136,7 @@ namespace Scenes.Scripts
         private void UpdateTimes()
         {
             m_totalElapsed += Time.deltaTime;
-            m_totalTime.text = FormatMmss(Mathf.FloorToInt(m_totalElapsed));
+            m_workoutTime.text = FormatMmss(Mathf.FloorToInt(m_totalElapsed));
             
             m_phaseRemaining -= Time.deltaTime;
             m_onTime.text = FormatMmss(Mathf.Max(0, Mathf.CeilToInt(m_phaseRemaining)));
