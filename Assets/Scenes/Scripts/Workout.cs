@@ -1,10 +1,16 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scenes.Scripts
 {
-    public class OnOffWorkout : MonoBehaviour
+    public class Workout : MonoBehaviour
     {
+        public event Action ResetClicked = delegate { };
+        public event Action StopClicked  = delegate { };
+        public event Action PlayClicked  = delegate { };
+        
         private enum WorkoutPhase
         {
             On, 
@@ -25,17 +31,38 @@ namespace Scenes.Scripts
         private TextMeshProUGUI m_nextPhaseText;
         [SerializeField]
         private TextMeshProUGUI m_opfTimeText;
+        [SerializeField] 
+        private Button m_resetBtn;
+        [SerializeField] 
+        private Button m_stopBtn;
+        [SerializeField] 
+        private Button m_playBtn;
 
         private bool m_workoutActive;
         private int m_currentRound;
         private float m_phaseRemaining;      
         private float m_totalElapsed;
         private WorkoutPhase m_phase;
+        private IWorkout m_workout;
         
         public int OnSeconds { get; private set; }
         public int OffSeconds { get; private set; }
         public int Rounds { get; private set; }
         public int TotalSeconds { get; private set; }
+
+        private void Awake()
+        {
+            m_resetBtn.onClick.AddListener(OnResetClicked);
+            m_stopBtn.onClick.AddListener(OnStopClicked);
+            m_playBtn.onClick.AddListener(OnPlayClicked);
+        }
+        
+        private void OnDestroy()
+        {
+            m_resetBtn.onClick.RemoveListener(OnResetClicked);
+            m_stopBtn.onClick.RemoveListener(OnStopClicked);
+            m_playBtn.onClick.RemoveListener(OnPlayClicked);
+        }
         
         private void Update()
         {
@@ -63,12 +90,16 @@ namespace Scenes.Scripts
 
         public void StartWorkout(IWorkout workout)
         {
+            m_workout = workout;
+            
             if (workout is IOnOffWorkout onOffWorkout)
             {
                 OnSeconds = onOffWorkout.OnSeconds;
                 OffSeconds = onOffWorkout.OffSeconds;
                 Rounds = onOffWorkout.Rounds;
                 TotalSeconds = onOffWorkout.TotalSeconds;
+                
+                m_opfTimeText.transform.parent.gameObject.SetActive(true);
             }
             else if (workout is IEmomWorkout emomWorkout)
             {
@@ -93,6 +124,7 @@ namespace Scenes.Scripts
             m_workoutTime.text = "00:00";
             
             SetNextPhaseText();
+            SetPlayVisibility(false);
         }
 
         private void SetNextPhaseText()
@@ -110,6 +142,37 @@ namespace Scenes.Scripts
             m_onTime.text = FormatMmss(Mathf.CeilToInt(m_phaseRemaining));
             
             SetNextPhaseText();
+        }
+        
+        private void OnResetClicked()
+        {
+            ResetClicked.Invoke();
+            
+            StartWorkout(m_workout);
+        }
+
+        private void OnStopClicked()
+        {
+            StopClicked.Invoke();
+            
+            SetPlayVisibility(true);
+            
+            m_workoutActive = false;
+        }
+
+        private void OnPlayClicked()
+        {
+            PlayClicked.Invoke();
+            
+            SetPlayVisibility(false);
+            
+            m_workoutActive = true;
+        }
+        
+        private void SetPlayVisibility(bool showPlay)
+        {
+            m_playBtn.gameObject.SetActive(showPlay);
+            m_stopBtn.gameObject.SetActive(!showPlay);
         }
         
         private void SwitchToOnPhase()

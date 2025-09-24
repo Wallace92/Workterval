@@ -6,6 +6,7 @@ using Scenes.Scripts.Factories;
 using Scenes.Scripts.Models;
 using Scenes.Scripts.Views;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Scenes.Scripts
@@ -24,7 +25,7 @@ namespace Scenes.Scripts
         [SerializeField]
         private Transform m_workoutTileContainer;
         [SerializeField]
-        private OnOffWorkout m_onOffWorkout;
+        private Workout m_workout;
         [SerializeField]
         private Button m_exerciseButton;
         
@@ -39,6 +40,7 @@ namespace Scenes.Scripts
             m_workoutControllerView.ShowThumbnails(m_exercises);
             
             m_workoutControllerView.WorkoutStarted += OnWorkoutStarted;
+            
             m_exerciseButton.onClick.AddListener(OnExerciseButtonClicked);
         }
 
@@ -46,16 +48,15 @@ namespace Scenes.Scripts
         {
             m_workoutControllerView.WorkoutStarted -= OnWorkoutStarted;
             
-            foreach (var preview in m_workoutPreviews)
-            {
-                Destroy(preview.gameObject);
-            }
+            Dispose();
             
             m_exerciseButton.onClick.RemoveListener(OnExerciseButtonClicked);
         }
 
         private void OnWorkoutStarted(IExercise[] exercises, IWorkout workout)
         {
+            Dispose();
+            
             foreach (var exercise in exercises.Reverse())
             {
                 var workoutPreview = Instantiate(m_workoutTilePreviewPrefab, m_workoutTileContainer);
@@ -67,10 +68,10 @@ namespace Scenes.Scripts
                 m_workoutPreviews.Add(workoutPreview);
             }
             
-            m_workoutControllerView.SetCurrentTab(m_onOffWorkout.gameObject);
+            m_workoutControllerView.SetCurrentTab(m_workout.gameObject);
             
-            m_onOffWorkout.gameObject.SetActive(true);
-            m_onOffWorkout.StartWorkout(workout);
+            m_workout.gameObject.SetActive(true);
+            m_workout.StartWorkout(workout);
         }
 
         private void OnExerciseButtonClicked()
@@ -79,6 +80,16 @@ namespace Scenes.Scripts
             {
                 workoutPreview.Toggle();
             }
+        }
+
+        private void Dispose()
+        {
+            foreach (var preview in m_workoutPreviews)
+            {
+                Destroy(preview.gameObject);
+            }
+            
+            m_workoutPreviews.Clear();
         }
     }
 }
