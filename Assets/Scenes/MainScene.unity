@@ -2616,11 +2616,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Scenes.Scripts.OnOffWorkout
   m_onTime: {fileID: 725435679}
   m_offTime: {fileID: 8318551}
-  m_rounds: {fileID: 1916611481}
+  m_roundsText: {fileID: 1916611481}
   m_workoutTime: {fileID: 1530314478}
   m_totalTime: {fileID: 1659653631}
   m_nextPhaseText: {fileID: 1915598543}
   m_opfTimeText: {fileID: 1320775211}
+  m_bigTimeImage: {fileID: 2057421369}
   m_resetBtn: {fileID: 1994618169}
   m_stopBtn: {fileID: 2073811522}
   m_playBtn: {fileID: 1448628293}
@@ -4099,7 +4100,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -545.1}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 700, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1916611481
 MonoBehaviour:

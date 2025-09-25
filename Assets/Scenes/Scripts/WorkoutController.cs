@@ -86,6 +86,11 @@ namespace Scenes.Scripts
         {
             foreach (var preview in m_workoutPreviews)
             {
+                if (preview == null)
+                {
+                    continue;
+                }
+                
                 Destroy(preview.gameObject);
             }
             
