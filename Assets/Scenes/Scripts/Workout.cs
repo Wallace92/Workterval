@@ -41,7 +41,7 @@ namespace Scenes.Scripts
         private IWorkoutState m_state;
         private Coroutine m_stateRoutine;
         
-        public bool HasRest => m_offSeconds > 0;
+        public bool HasRestTime => m_offSeconds > 0;
         public int OnSeconds => m_onSeconds;
         public int OffSeconds => m_offSeconds;
         public int Rounds => m_rounds;
@@ -93,6 +93,7 @@ namespace Scenes.Scripts
 
             CurrentRound = 1;
             TotalElapsed = 0f;
+            m_isPaused = false;
            
             SetPlayVisibility(false);
             TransitionTo(new PreparationState(this));
@@ -100,11 +101,6 @@ namespace Scenes.Scripts
 
         public void TransitionTo(IWorkoutState next)
         {
-            if (m_state != null)
-            {
-                m_state.Exit();
-            }
-            
             if (m_stateRoutine != null)
             {
                 StopCoroutine(m_stateRoutine);
@@ -148,14 +144,14 @@ namespace Scenes.Scripts
             m_workoutTime.text = "00:00";
             m_totalTime.text = FormatMmss(m_totalSeconds);
             
-            if (HasRest)
+            if (HasRestTime)
             {
-                m_offTime.text = FormatMmss(m_offSeconds);
+                m_offTime.text = FormatMmss(m_onSeconds);
                 m_opfTimeText.text = "Work";
             }
         }
 
-        public void UI_ShowWorkoutHeader()
+        public void ShowWorkoutHeader()
         {
             m_bigTimeImage.color = Color.green;
             m_totalTime.text = FormatMmss(m_totalSeconds);
@@ -163,63 +159,54 @@ namespace Scenes.Scripts
             m_roundsText.text = $"{CurrentRound}/{m_rounds}";
             m_roundsText.transform.gameObject.SetActive(true);
             
-            if (HasRest)
+            if (HasRestTime)
             {
                 m_offTime.text = FormatMmss(m_offSeconds);
-                UI_SetPhaseTextCurrent(false);
+                m_offTime.transform.parent.gameObject.SetActive(true);
             }
         }
 
-        public void UI_SetPhaseTextCurrent(bool currentIsWork)
+        public void SetPhaseTextCurrent(bool currentIsWork)
         {
             m_nextPhaseText.text = currentIsWork ? "Work" : "Rest";
             m_opfTimeText.text = currentIsWork ? "Rest" : "Work";
         }
 
-        public void SetOnTime(string t)
+        public void SetOnTime(int t)
         {
-            m_onTime.text = t;
+            m_onTime.text = FormatMmss(t);
         }
 
-        public void UI_SetOffTime(string t)
+        public void SetOffTime(int t)
         {
-            m_offTime.text = t;
+            m_offTime.text = FormatMmss(t);
         }
 
-        public void UI_SetWorkoutTime(string t)
+        public void SetWorkoutTime(int t)
         {
-            m_workoutTime.text = t;
+            m_workoutTime.text = FormatMmss(t);
         }
 
-        public void UI_SetRounds(string t)
+        public void SetRoundsText(string t)
         {
             m_roundsText.text = t;
         }
-
-        public void UI_SetOffGroupVisible(bool v)
-        {
-            m_offTime.transform.parent.gameObject.SetActive(v);
-        }
-
-        public void UI_Completed()
+        
+        public void SetCompletedWorkout()
         {
             m_onTime.text = "Completed";
             m_onTime.fontSize = 150;
             m_offTime.transform.parent.gameObject.SetActive(false);
             m_nextPhaseText.text = "Well done!";
             m_roundsText.transform.gameObject.SetActive(false);
+            
             SetPlayVisibility(true);
-        }
-
-        public static string FormatMmss(int seconds)
-        {
-            var m = seconds / 60;
-            var s = seconds % 60;
-            return $"{m:00}:{s:00}";
         }
         
         private void OnResetClicked()
         {
+            m_isPaused = false;
+            SetPlayVisibility(false);
             StartWorkout(m_workout);
         }
 
@@ -240,5 +227,13 @@ namespace Scenes.Scripts
             m_playBtn.gameObject.SetActive(showPlay);
             m_stopBtn.gameObject.SetActive(!showPlay);
         }
+        
+        private static string FormatMmss(int seconds)
+        {
+            var m = seconds / 60;
+            var s = seconds % 60;
+            return $"{m:00}:{s:00}";
+        }
+
     }
 }

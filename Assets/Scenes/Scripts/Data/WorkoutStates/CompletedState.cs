@@ -11,12 +11,7 @@ namespace Scenes.Scripts.Data.WorkoutStates
 
         public void Enter()
         {
-            m_ctx.UI_Completed();
-        }
-
-        public void Exit()
-        {
-            
+            m_ctx.SetCompletedWorkout();
         }
 
         public System.Collections.IEnumerator Run()
